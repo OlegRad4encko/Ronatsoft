@@ -1,0 +1,152 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    outline: none;
+}
+
+body {
+    background-color: white;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2f3640;
+    color: white;
+}
+
+.outline {
+    padding: 30px 130px;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+.header ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.header li:last-child {
+    margin-right: 0px;
+}
+
+.header ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.header ul li a:hover {
+    color: #dcdde1;
+    text-decoration: underline;
+}
+
+.temporary {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: black;
+    opacity: 50%;
+}
+
+.active-page {
+    text-decoration: underline !important;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+.users {
+    border-collapse: collapse;
+    border: 1px solid #2f3640;;
+}
+
+.users tr {
+    height: 100%;
+}
+
+.users tr th {
+    color: white;
+    padding: 10px 20px;
+    background: #2f3640;
+}
+
+.users tr td {
+    padding: 10px 20px;
+    color: #2f3640;
+    height: 100%;
+}
+
+.users tr td span {
+    opacity: 50%;
+    font-weight: bold;
+}
+
+.users tr td:last-child {
+    padding: 0px 0px;
+    display: block;
+    height: 39px;
+}
+
+.users tr:nth-child(2n+1) {
+    background: #dcdde1;
+}
+
+.users button {
+    display: block;
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    transition: .2s;
+}
+
+.users button:hover {
+    cursor: pointer;
+    color: white;
+    background-color: #00a8ff;
+}
+
+.controls-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.controls {
+    margin-top: 30px;
+}
+
+.controls button {
+    padding: 10px 15px;
+    border: 1px solid #00a8ff;
+    background-color: transparent;
+    color: #00a8ff;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.controls button:hover {
+    color: white;
+    background-color: #00a8ff;
+}
+
+
+.error-onpage {
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+}

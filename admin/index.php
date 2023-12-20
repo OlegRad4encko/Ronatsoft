@@ -4,7 +4,7 @@
     require_once("../database/database.php");
 
     if(isset($_SESSION['name'])){
-        if(!checkSession($_SESSION['name'])) {
+        if(!checkSession()) {
           header("Location: home.php");
           exit (0);
         }
@@ -21,7 +21,7 @@
     </head>
     <body>
         <form class="login" id="login" method="POST" action="">
-            <input name="csrf_token" type="hidden" value="<?php echo generate_CSRF_form_token() ?>" />
+            <input name="csrf_token" type="hidden" value="<?php echo generate_CSRF_form_token() ?>">
             <input name="login" type="text" placeholder="Login">
             <input name="password" type="password" placeholder="Password">
             <input type="submit" value="Log In">

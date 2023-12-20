@@ -1,0 +1,27 @@
+.popup-error {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    transform: translate(-50%,-50%);
+    background-color: #f38282;
+    padding: 10px;
+    border-radius: 5px;
+    color: #2f3640;
+}
+
+.popup-error .inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #2f3640;
+}
+
+.popup-error p {
+    display: block;
+    padding-top: 5px;
+}
+
