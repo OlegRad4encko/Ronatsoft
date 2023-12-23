@@ -13,11 +13,13 @@
               ]);
         }
         if(count($sql) == 0) {
-            // echo 'Не правильное имя или пароль!';
-            echo hash("sha256",hash("sha256", 'admin'));
+            echo '<div class="popup-error"><div class="inline"><h2>Error</h2><i class="cross-popup fa-regular fa-circle-xmark"></i></div><p>Wrong login or password</p></div>';
+            exit;
+
         }
         if(count($sql) > 1) {
-            echo 'Неизвесная ошибка!';
+            echo '<div class="popup-error"><div class="inline"><h2>Error</h2><i class="cross-popup fa-regular fa-circle-xmark"></i></div><p>Unknown error</p></div>';
+            exit;
         }
         if(count($sql) == 1) {
             $_SESSION['name'] = time();

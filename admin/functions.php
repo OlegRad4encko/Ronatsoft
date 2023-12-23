@@ -22,9 +22,9 @@
     # get styles
     function get_styles() {
         $styles = [
-            '<link rel="stylesheet" href="../assets/css/admin_styles.css">',
-            '<link rel="stylesheet" href="../assets/css/add-edit-forms.css">',
-            '<link rel="stylesheet" href="../assets/css/popaps.css">',
+            '<link rel="stylesheet" href="css/admin_styles.css">',
+            '<link rel="stylesheet" href="css/add-edit-forms.css">',
+            '<link rel="stylesheet" href="css/popaps.css">',
             ''
         ];
 

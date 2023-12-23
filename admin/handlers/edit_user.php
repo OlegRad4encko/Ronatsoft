@@ -61,10 +61,6 @@ if (isset( $_SESSION['csrf_token'] ) and $_SESSION['csrf_token'] == @$_POST['csr
                 }
             }
 
-            if($_POST['new_password'] == '') {
-                echo '<div class="popup-error"><div class="inline"><h2>Error</h2><i class="cross-popup fa-regular fa-circle-xmark"></i></div><p>Empty password</p></div>';
-                exit;
-            }
 
             if(isset($_POST['new_password']) and $_POST['new_password'] != '') {
                 $update_user_password = $db->query("UPDATE `administration` SET 

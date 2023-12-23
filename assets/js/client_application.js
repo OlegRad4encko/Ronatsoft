@@ -1,15 +1,17 @@
 $(document).ready(function () {
-    $('#login').on('submit', function (event){
+    console.log($('#client-application'));
+    $('#client-application').on('submit', function (event){
         event.preventDefault();
         $.ajax({
             type: 'POST',
-            url: 'handlers/login.php',
+            url: 'client_application_handler.php',
             data: $(this).serialize(),
             success: function(data) {
                 if(data.indexOf('error') != undefined) {
-                    $(data).appendTo($('body'));
+                    $(data).prependTo($('#client-application'));
                     $('.cross-popup').on('click', function(){
-                        $('.popup-error').remove();
+                        $('.form-error').remove();
+                        $('.form-success').remove();
                     });
                 }
 

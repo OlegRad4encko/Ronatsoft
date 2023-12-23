@@ -17,7 +17,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Log in</title>
-        <link rel="stylesheet" href="../assets/css/admin_login.css">
+        <link rel="stylesheet" href="css/admin_login.css">
+        <link rel="stylesheet" href="css/popaps.css">
     </head>
     <body>
         <form class="login" id="login" method="POST" action="">
