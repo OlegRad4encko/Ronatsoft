@@ -15,6 +15,16 @@
         exit;
     }
 
+    if(empty(trim($_POST['first_name'])) || empty(trim($_POST['email'])) || empty(trim($_POST['message']))) {
+        echo build_form_info_block('Please fill in all required fields.', 'error');
+        exit;
+    }
+
+    if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        echo build_form_info_block('Please fill in correct email address.', 'error');
+        exit;
+    }
+
     $first_name = findXSS($_POST['first_name']);
     $second_name = (isset($_POST['second_name'])) ? findXSS($_POST['second_name']) : '';
     $email = findXSS($_POST['email']);

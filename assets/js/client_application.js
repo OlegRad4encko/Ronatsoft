@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log($('#client-application'));
     $('#client-application').on('submit', function (event){
         event.preventDefault();
         $.ajax({
@@ -14,9 +13,6 @@ $(document).ready(function () {
                         $('.form-success').remove();
                     });
                 }
-
-                
-                console.log(data);
             }
             
         });

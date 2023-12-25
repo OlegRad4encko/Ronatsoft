@@ -46,6 +46,15 @@
     align-items: center;
 }
 
+.menu-toggle {
+    display: block;
+    background: none;
+    color: white;
+    border: none;
+    font-size: 22px;
+    margin-left: 22px;
+}
+
 .header-menu .nav, .header-menu .nav-socials {
     list-style: none;
 }
@@ -55,7 +64,7 @@
 }
 
 .nav li {
-    display: inline;
+    display: inline-block;
     font-family: 'Open_Sans', sans-serif;
     color: #ffffff;
     font-size: 20px;
@@ -99,7 +108,10 @@ a {
     justify-content: center;
     align-items: center;
     background-image: url("../images/code_text_programming_192795_3840x2400 1.png");
-    background-size: 100% 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-position: center center;
 }
 
 .logo-block div {
@@ -114,6 +126,7 @@ a {
     text-transform: uppercase;
     font-size: 20px;
     margin-bottom: 30px;
+    width: auto;
 }
 
 .logo-block div h1 {
@@ -137,7 +150,7 @@ a {
 }
 
 .about-us-text {
-    max-width: 540px;
+    max-width: 50%;
 }
 
 .about-us-text h1 {
@@ -171,6 +184,7 @@ a {
 .our-projects h1 {
     font-size: 48px;
     margin-bottom: 162px;
+    text-align: center;
 }
 
 .our-projects .carousel {
@@ -355,6 +369,7 @@ a {
     justify-content: space-around;
     width: 100%;
     flex-wrap: wrap;
+    gap: 0px 40px;
 }
 
 
@@ -363,7 +378,6 @@ a {
     flex-direction: column;
     justify-content: space-between;
     width: 321px;
-    margin-right: 40px;
 }
 
 .contact-us form .form-horisontal .fields-part .input-block {
@@ -456,8 +470,71 @@ a {
 
 
 
+/* Mob */
+@media only screen and (max-width: 480px) {
+    .side-paddings {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+
+/* tablets */
+@media only screen and (min-width: 481px) and (max-width: 1080px) {
+    .side-paddings {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+
+/* Desktop 
+@media only screen and (min-width: 1025px) {
+
+}
+*/
 
 
 
+@media only screen and (min-width: 1080px) {
+    .menu-toggle {
+        display: none; 
+    }
+    .nav {
+        display: flex; 
+    }
+    .nav-socials {
+        margin-left: auto; 
+    }
+}
 
+@media only screen and (max-width: 1079px) {
+    .menu-toggle {
+        display: block; 
+        cursor: pointer;
+    }
+    .nav {
+        display: none; 
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: #27282C;
+        z-index: 1;
+    }
+    .nav li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .menu-toggle:focus + .nav, .menu-toggle:focus + .nav-socials {
+    display: block;
+}
 
+    .nav-socials {
+        order: -1;
+    }
+}

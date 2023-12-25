@@ -32,28 +32,42 @@ if(strlen($_POST['password']) < 6)
     exit;
 }
 
+
 if($_POST['user_login'] == '') 
 {
     echo build_error_block('Login length is less than 6 characters');
     exit;
 }
 
+
 if($_POST['first_name'] == '' or $_POST['first_name'] == ' ') {
     echo build_error_block('Fist name can`t be empty');
 }
+
+
+if ($_POST['user_role'] != 'admin' and $_POST['user_role'] != 'moderator')
+{
+    echo build_error_block('Form submission error. Please Update the page.');
+    exit;
+}
+
 
 $check_login_user = $db->query("SELECT count(*) as `count` FROM `administration`
     WHERE `user_login` = :user_login", [
         'user_login' => findXSS($_POST['user_login'])
     ]);    
-
 if ($check_login_user[0]['count'] != 0) {
-    echo build_error_block('This login already exists');
+    echo build_error_block('This login already exists.');
     exit;
-}          
+}
+
+if (empty(trim($_POST['first_name'])) || empty(trim($_POST['user_login'])) || 
+    empty(trim($_POST['password']))) 
+{
+    echo build_error_block('Please fill in all required fields.');
+    exit;
+}
     
-
-
     
 $add_user_name = $db->query("INSERT INTO `administrator_names` 
     (`first_name`, `second_name`, `patronymic`) 
@@ -66,12 +80,6 @@ $add_user_name = $db->query("INSERT INTO `administrator_names`
 
 $get_last_user_name = $db->query("SELECT max(`id_name`) as `id_name` from `administrator_names`", []);
 
-
-if ($_POST['user_role'] != 'admin' and $_POST['user_role'] != 'moderator')
-{
-    echo build_error_block('Form submission error. Please Update the page.');
-    exit;
-}
 
 $add_user = $db->query("INSERT INTO `administration` 
     (`id_name`, `user_role`, `user_login`, `password_hashed`) 

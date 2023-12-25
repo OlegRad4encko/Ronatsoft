@@ -24,6 +24,8 @@
             </div>
 
             <div class="header-menu">
+                <button id="menu-toggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
                 <ul class="nav">
                     <li>
                         <a href="#our-projects">Projects</a>

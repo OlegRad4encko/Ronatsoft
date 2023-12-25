@@ -16,7 +16,7 @@
 
                 $this->link = new PDO($dbh, $config['username'], $config['password']);
             } catch(Exception $e) {
-                echo 'Error connecting to database';
+                echo '<center><h1>Error connecting to database</h1></center>';
             }
         }
 
