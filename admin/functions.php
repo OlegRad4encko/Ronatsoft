@@ -7,17 +7,29 @@
     $userhash = hash("sha256",hash("sha256",$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']));
     
 
+
+
+
     function take_first_char_from_str($str) {
         return mb_substr($str, 0, 1, 'UTF-8');
     }
+
+
+
 
     function to_apper_case($str) {
         return mb_strtoupper($str, 'UTF-8');
     }
 
+
+
+
     function first_letter_to_appercase($str) {
         return ucfirst($str);
     }
+
+
+
 
     # get styles
     function get_styles() {
@@ -35,6 +47,8 @@
 
         return $result_string;
     }
+
+
 
 
     # get scripts 
@@ -55,10 +69,15 @@
         return $result_string;
     }
 
+
+
+
     # genera CSRF token 
     function generate_CSRF_form_token() {
         return $_SESSION['csrf_token'] = substr( str_shuffle( 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' ), 0, 10 );
     }
+
+
 
     
     # check XSS
@@ -66,6 +85,8 @@
         return htmlspecialchars($param,ENT_QUOTES);
     }
     
+
+
 
     # check active session
     function checkSession() {
@@ -91,6 +112,9 @@
       }
 
     
+
+
+
     # get the user role
     function get_user_role() {
         global $db;
@@ -108,6 +132,9 @@
 
         return $user_role;
     }
+
+
+
 
     # get user name 
     function get_user_name() {
@@ -148,7 +175,9 @@
     }
 
 
-    function get_all_users() {
+
+
+    function get_users_table() {
         global $db;
         global $userhash;
 
@@ -178,11 +207,11 @@
             return '<div class="error-onpage">Somesing went wrong</div>';
         }
         
-        $users_table = '<table class="users">';
+        $users_table = '<table class="data-table">';
         $users_table .= '<tr>';
         $users_table .= '<th>First Name</th>';
-        $users_table .= '<th>Second Name</th>';
-        $users_table .= '<th>Patronymic</th>';
+        $users_table .= '<th class="hide">Second Name</th>';
+        $users_table .= '<th class="hide">Patronymic</th>';
         $users_table .= '<th>User Role</th>';
         $users_table .= '<th>Login</th>';
         $users_table .= '<th>Edit User</th>';
@@ -199,8 +228,8 @@
             }
                 
 
-            $users_table .= '<td>'.$get_all_users_query[$iterator]['second_name'].'</td>';
-            $users_table .= '<td>'.$get_all_users_query[$iterator]['patronymic'].'</td>';
+            $users_table .= '<td class="hide">'.$get_all_users_query[$iterator]['second_name'].'</td>';
+            $users_table .= '<td class="hide">'.$get_all_users_query[$iterator]['patronymic'].'</td>';
             $users_table .= '<td>'.$get_all_users_query[$iterator]['user_role'].'</td>';
             $users_table .= '<td>'.$get_all_users_query[$iterator]['user_login'].'</td>';
             $users_table .= '<td><button name="edit_user" value="'.$get_all_users_query[$iterator]['user_id'].'"><i class="fa-solid fa-user-pen"></i></td>';
@@ -208,8 +237,141 @@
         }
         $users_table .= '</table>';
 
-        return $users_table;
+        return $users_table; 
+    }
+
+
+
+
+    function get_application($entries_on_page, $only_new, $page, $limit) 
+    {
         
+        global $db;
+
+        $count_of_applications = get_applications_count();
+
+        $application_table = '';
+        $applications;
+
+        $offset = (intval($page) - 1) * $limit;
+
+
+        if($only_new) 
+        {
+            $applications = $db->query("SELECT SHA2(`id_application`, 256) as 'id_application', 
+            `application_state`, `app_user_mail`, `app_user_first_name`, `id_user` FROM `applications` where `application_state` = 'new' LIMIT ".intval($limit)." OFFSET ".intval($offset));
+        } else 
+        {
+            $applications = $db->query("SELECT SHA2(`id_application`, 256) as 'id_application', 
+            `application_state`, `app_user_mail`, `app_user_first_name`, `id_user` FROM `applications` where 1=1 LIMIT ".intval($limit)." OFFSET ".intval($offset));
+        }    
+        
+
+        if (count($applications) == 0) {
+            return "<div>Empty applications list</div>";
+        }
+
+        
+        $application_table .= '<table class="data-table">';
+
+
+        $application_table .= '<tr>';
+        $application_table .= '<th>User Email</th>';
+        $application_table .= '<th class="hide">User Name</th>';
+        $application_table .= '<th class="hide">State</th>';
+        $application_table .= '<th>View Application</th>';
+        $application_table .= '</tr>';
+
+
+        for ($iterator = 0; $iterator < count($applications); $iterator ++) {
+            $user_role = '';
+            $user_full_name = '';
+            $user_short_name = '';
+
+            if ($applications[$iterator]['application_state'] != 'new') 
+            {
+                $users_data = $db->query("SELECT 
+                concat(`administrator_names`.`second_name`, ' ', 
+                `administrator_names`.`first_name`, ' ', 
+                `administrator_names`.`patronymic`) as 'user_full_name', 
+                concat(`administrator_names`.`second_name`, ' ', 
+                SUBSTRING(`administrator_names`.`first_name`, 1, 1), '. ', 
+                SUBSTRING(`administrator_names`.`patronymic`, 1, 1), '.') as 'user_short_name', 
+                `administration`.`user_role` 
+                FROM `administration` join `administrator_names` on administration.id_name = administrator_names.id_name 
+                where administration.id_user = :id_user", 
+                [
+                    'id_user' => $applications[$iterator]['id_user']
+                ]);
+
+                $user_role = $users_data[0]['user_role'];
+                $user_full_name = $users_data[0]['user_full_name'];
+                $user_short_name = $users_data[0]['user_short_name'];
+            } else 
+            {
+                $user_role = '';
+                $user_full_name = '';
+                $user_short_name = '';
+            }
+            
+
+
+            $application_table .= '<tr>';
+            $application_table .= '<td>'.$applications[$iterator]['app_user_mail'].'</td>';
+            $application_table .= '<td class="hide">'.$applications[$iterator]['app_user_first_name'].'</td>';
+
+            if ($applications[$iterator]['application_state'] == 'new') {
+                $application_table .= '<td class="hide">'.$applications[$iterator]['application_state'].'</td>';
+            } else {
+                $application_table .= '<td class="hide">'.$applications[$iterator]['application_state'].' <span>by <a class="tooltip">'.$user_short_name.'</a></span></td>';
+            }
+            
+
+            $application_table .= '<td><button name="application_id" value="'.$applications[$iterator]['id_application'].'"><i class="fa-solid fa-book-open"></i></td>';
+            $application_table .= '</tr>';
+        }
+        
+
+        $application_table .= '</table>';
+
+
+        if($only_new) {
+            $application_table .= get_appl_pagination(get_new_applications_count(), $page, $limit, $only_new);
+        } else {
+            $application_table .= get_appl_pagination(get_applications_count(), $page, $limit, $only_new);
+        }
+        
+
+
+        return $application_table;
+
+
+    }
+
+
+    function get_new_applications_count() 
+    {
+        global $db;
+        $appl_count = $db->query("SELECT count(*) as 'count' from `applications` where `application_state` = 'new'");
+        return $appl_count[0]['count'];
+    }
+
+    function get_applications_count() 
+    {
+        global $db;
+        $appl_count = $db->query("SELECT count(*) as 'count' from `applications` where 1=1");
+        return $appl_count[0]['count'];
+    }
+
+    function get_appl_pagination($items_count, $page, $items_per_page, $only_new) {
+        $pagination_block = '<div class="pagination">';
+        for ($i = 0; $i<($items_count / $items_per_page); $i ++) {
+            $page_number = $i+1;
+            $pagination_block .= '<a href="?page=applications&entries_on_page='.$items_per_page.'&new_applications='.$only_new.'&page_num='.$page_number.'">'.$page_number.'</a>';
+        }
+        $pagination_block .= '</div>';
+
+        return $pagination_block;
     }
 
     

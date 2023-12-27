@@ -20,7 +20,7 @@
         exit;
     }
 
-    if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         echo build_form_info_block('Please fill in correct email address.', 'error');
         exit;
     }

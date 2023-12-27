@@ -67,43 +67,48 @@ body {
     justify-content: center
 }
 
-.users {
+.data-table {
     border-collapse: collapse;
     border: 1px solid #2f3640;;
 }
 
-.users tr {
+.data-table tr {
     height: 100%;
 }
 
-.users tr th {
+.data-table tr th {
     color: white;
     padding: 10px 20px;
     background: #2f3640;
 }
 
-.users tr td {
+.data-table tr td {
     padding: 10px 20px;
     color: #2f3640;
     height: 100%;
 }
 
-.users tr td span {
+.data-table tr td span {
     opacity: 50%;
     font-weight: bold;
+    font-size: 12px;
 }
 
-.users tr td:last-child {
+.data-table tr td span a {
+    text-decoration: underline;
+}
+
+.data-table tr td:last-child {
     padding: 0px 0px;
     display: block;
     height: 39px;
 }
 
-.users tr:nth-child(2n+1) {
+.data-table tr:nth-child(2n+1) {
     background: #dcdde1;
 }
 
-.users button {
+.data-table button {
     display: block;
     height: 100%;
     width: 100%;
@@ -113,7 +118,7 @@ body {
     transition: .2s;
 }
 
-.users button:hover {
+.data-table button:hover {
     cursor: pointer;
     color: white;
     background-color: #00a8ff;
@@ -149,4 +154,146 @@ body {
     background-color: red;
     color: white;
     padding: 10px 15px;
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu-toggle {
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.applications {
+    display: flex;
+    flex-direction: column;
+}
+
+.applications .filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0px 20px;
+    margin-bottom: 30px;
+}
+
+.applications .filter > div {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    gap: 0px 20px;
+}
+
+.applications .filter > button {
+    padding: 10px 15px;
+    background: none;
+    border: 1px solid #00a8ff;
+    color: #00a8ff;
+    border-radius: 5px;
+    transition: .2s;
+}
+
+.applications .filter > button:hover {
+    color: white;
+    background-color: #00a8ff;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.pagination a {
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #2f3640;
+    color: white;
+    text-decoration: none;
+}
+
+@media only screen and (min-width: 1080px) {
+    .menu-toggle {
+        display: none; 
+    }
+    .nav {
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+    }
+    .nav-socials {
+        margin-left: auto; 
+    }
+}
+
+@media only screen and (max-width: 1079px) {
+    .menu-toggle {
+        display: block; 
+        cursor: pointer;
+    }
+    .nav {
+        display: none; 
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: #2f3640;
+        z-index: 1;
+    }
+    .nav li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .menu-toggle:focus + .nav, .menu-toggle:focus + .nav-socials {
+        display: block;
+    }
+
+    .nav:hover, .nav-socials:hover {
+        display: block;
+    }
+}
+
+
+/* phones */
+@media only screen and (max-width: 480px) {
+    .outline {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .data-table tr .hide, 
+    .data-table tr .hide {
+        display: none;
+    }
+
+    .applications .filter > div > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+
+/* tablets */
+@media only screen and (min-width: 481px) and (max-width: 1080px) {
+    .outline {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    .data-table tr .hide,  
+    .data-table tr .hide {
+        display: none;
+    }
+
+
 }

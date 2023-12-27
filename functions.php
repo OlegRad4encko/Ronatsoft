@@ -24,8 +24,7 @@
         $scripts = [
             '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
             '<script src="https://kit.fontawesome.com/24baab97da.js" crossorigin="anonymous"></script>',
-            '<script src="assets/js/client_application.js"></script>',
-            '<script src="assets/js/toggle-menu.js"></script>',
+            '<script src="assets/js/client_application.js"></script>'
 
         ];
 
@@ -37,11 +36,13 @@
         return $result_scripts;
     }
 
+
     # check XSS
     function findXSS($param) {
         return htmlspecialchars($param,ENT_QUOTES);
     }
 
+    
     # genera CSRF token 
     function generate_CSRF_form_token() {
         return $_SESSION['csrf_token'] = substr( str_shuffle( 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' ), 0, 10 );
@@ -57,7 +58,6 @@
         {
             return '<div class="form-success"><p>'.$text.'</p><i class="cross-popup fa-regular fa-circle-xmark"></i></div>';
         }
-        
     }
 
 
