@@ -1,9 +1,7 @@
 <?php
-    require_once("../../database/database.php");
     require_once("findXSS.php");
+    require_once("check_session_part.php");
 
-    $db = new Database();
-    session_start();
 
     if(isset( $_SESSION['csrf_token'] ) and $_SESSION['csrf_token'] == @$_POST['csrf_token']){
         if(isset($_POST['login']) and isset($_POST['password'])) {
@@ -13,12 +11,12 @@
               ]);
         }
         if(count($sql) == 0) {
-            echo '<div class="popup-error"><div class="inline"><h2>Error</h2><i class="cross-popup fa-regular fa-circle-xmark"></i></div><p>Wrong login or password</p></div>';
+            echo build_error_block('Wrong login or password');
             exit;
 
         }
         if(count($sql) > 1) {
-            echo '<div class="popup-error"><div class="inline"><h2>Error</h2><i class="cross-popup fa-regular fa-circle-xmark"></i></div><p>Unknown error</p></div>';
+            echo build_error_block('Unknown error.');
             exit;
         }
         if(count($sql) == 1) {
@@ -31,6 +29,14 @@
                     ':session' => $sessionTime,
                     ':user_hash' => $userhash
                 ]);
+
+            add_history([
+                'id_user' => get_unhashed_user_id(),
+                'action_type' => 0,
+                'last_value' => NULL,
+                'new_value' => NULL,
+                'additional_info' => NULL
+            ]);
 
             echo "<script>document.location.href=\"home.php\"</script>";
         }

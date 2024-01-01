@@ -58,6 +58,7 @@
             '<script src="https://kit.fontawesome.com/24baab97da.js" crossorigin="anonymous"></script>',
             '<script src="js/edit_delete_user.js" crossorigin="anonymous"></script>',
             '<script src="js/add_user.js" crossorigin="anonymous"></script>',
+            '<script src="js/change_detele_application.js" crossorigin="anonymous"></script>',
             ''
         ];
 
@@ -114,8 +115,7 @@
     
 
 
-
-    # get the user role
+      # get the user role
     function get_user_role() {
         global $db;
         global $userhash;
@@ -134,6 +134,30 @@
     }
 
 
+
+    function current_user() {
+        global $db;
+    
+        $sesname = $_SESSION['name'];
+    
+        $sql = $db->query("SELECT SHA2(`id_user`, 256) as 'user_id' from sessions where `session` like :sesname",[
+            ':sesname' => $sesname,
+        ]);
+    
+        return $sql[0]['user_id'];
+    }
+
+    function get_unhashed_user_id() {
+        global $db;
+    
+        $sesname = $_SESSION['name'];
+    
+        $sql = $db->query("SELECT `id_user` from sessions where `session` like :sesname",[
+            ':sesname' => $sesname,
+        ]);
+    
+        return $sql[0]['id_user'];
+    }
 
 
     # get user name 
@@ -243,7 +267,7 @@
 
 
 
-    function get_application($entries_on_page, $only_new, $page, $limit) 
+    function get_applications($entries_on_page, $only_new, $page, $limit) 
     {
         
         global $db;
@@ -290,19 +314,7 @@
 
             if ($applications[$iterator]['application_state'] != 'new') 
             {
-                $users_data = $db->query("SELECT 
-                concat(`administrator_names`.`second_name`, ' ', 
-                `administrator_names`.`first_name`, ' ', 
-                `administrator_names`.`patronymic`) as 'user_full_name', 
-                concat(`administrator_names`.`second_name`, ' ', 
-                SUBSTRING(`administrator_names`.`first_name`, 1, 1), '. ', 
-                SUBSTRING(`administrator_names`.`patronymic`, 1, 1), '.') as 'user_short_name', 
-                `administration`.`user_role` 
-                FROM `administration` join `administrator_names` on administration.id_name = administrator_names.id_name 
-                where administration.id_user = :id_user", 
-                [
-                    'id_user' => $applications[$iterator]['id_user']
-                ]);
+                $users_data = get_user_data_for_aplication($applications[$iterator]['id_user']);
 
                 $user_role = $users_data[0]['user_role'];
                 $user_full_name = $users_data[0]['user_full_name'];
@@ -327,7 +339,7 @@
             }
             
 
-            $application_table .= '<td><button name="application_id" value="'.$applications[$iterator]['id_application'].'"><i class="fa-solid fa-book-open"></i></td>';
+            $application_table .= '<td><a href="application.php?application_id='.$applications[$iterator]['id_application'].'"><i class="fa-solid fa-book-open"></i></a></td>';
             $application_table .= '</tr>';
         }
         
@@ -363,7 +375,8 @@
         return $appl_count[0]['count'];
     }
 
-    function get_appl_pagination($items_count, $page, $items_per_page, $only_new) {
+    function get_appl_pagination($items_count, $page, $items_per_page, $only_new) 
+    {
         $pagination_block = '<div class="pagination">';
         for ($i = 0; $i<($items_count / $items_per_page); $i ++) {
             $page_number = $i+1;
@@ -374,6 +387,158 @@
         return $pagination_block;
     }
 
+
+    function check_application_id($application_id) {
+        global $db;
+
+        $check_appl_id_query = $db->query("SELECT count(*) as 'count' from `applications` where SHA2(`id_application`, 256) = :application_id",
+        [
+            'application_id' => $application_id
+        ]);
+
+        return ($check_appl_id_query[0]['count'] > 0) ? true : false;
+    }
+
+
+    function get_application($application_id) {
+        global $db;
+        $csrf_token = generate_CSRF_form_token();
+
+        $application_view = '';
+
+        $application_data = $db->query("SELECT * from `applications` where SHA2(`id_application`, 256) = :application_id",
+        [
+            'application_id' => $application_id
+        ]);
+
+        $user_data = get_user_data_for_aplication($application_data[0]['id_user'])[0]['user_short_name'];
+
+
+        
+        if ($application_data[0]['application_state'] != 'solved') {
+            $application_view .= '<form class="application" id="change_state">';
+        } else {
+            $application_view .= '<div class="application" id="change_state">';
+        }
+
+        $application_view .= '<div class="state">';
+        $application_view .= '<span id="state">'.$application_data[0]['application_state'].'</span>';
+        $application_view .= ($application_data[0]['application_state'] != 'new') ? ' by '.$user_data : '';
+        $application_view .= '</div>';
+        $application_view .= '<div>';
+        $application_view .= '<div><label>User Email</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User Email" value="'.$application_data[0]['app_user_mail'].'">';
+        $application_view .= '</div><div><label>User tel</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User tel" value="'.$application_data[0]['app_user_tel'].'">';
+        $application_view .= '</div></div><div><div><label>User first name</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User first name" value="'.$application_data[0]['app_user_first_name'].'">';
+        $application_view .= '</div><div><label>User second name</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User second name" value="'.$application_data[0]['app_user_second_name'].'">';
+        $application_view .= '</div></div><div><div><label>User country</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User country" value="'.$application_data[0]['app_user_country'].'">';
+        $application_view .= '</div><div><label>User company</label>';
+        $application_view .= '<input type="text" readonly="readonly" placeholder="User company" value="'.$application_data[0]['app_user_company'].'">';
+        $application_view .= '</div></div><div class="user_message">';
+        $application_view .= '<textarea readonly="readonly" placeholder="User message">'.$application_data[0]['app_user_message'].'</textarea>';
+        $application_view .= '</div>';
+
+        if ($application_data[0]['application_state'] != 'solved') {
+            $application_view .= '<div class="controll" id="controll_solved_block">';
+            $application_view .= '<input type="hidden" name="application_id" value="'.$application_id.'">';
+            $application_view .= '<input type="hidden" name="csrf_token" value="'.$csrf_token.'">';
+            $application_view .= '<input type="submit" value="Make application solved"></div>';
+            $application_view .= '</form>';
+        } else {
+            $application_view .= '</div>';
+        }
+        
+        $application_view .= '<form class="application delete_appl" id="delete_application">';
+        $application_view .= '<input type="hidden" name="application_id" value="'.$application_id.'">';
+        $application_view .= '<input type="hidden" name="csrf_token" value="'.$csrf_token.'">';
+        $application_view .= '<div class="controll"><input type="submit" value="Delete application"></div>';
+        $application_view .= '</form>';
+        
+
+        return $application_view;
+    }
+
+    function get_user_data_for_aplication($user_id) {
+        global $db;
+        $user_data = $db->query("SELECT 
+                concat(`administrator_names`.`second_name`, ' ', 
+                `administrator_names`.`first_name`, ' ', 
+                `administrator_names`.`patronymic`) as 'user_full_name', 
+                concat(`administrator_names`.`second_name`, ' ', 
+                SUBSTRING(`administrator_names`.`first_name`, 1, 1), '. ', 
+                SUBSTRING(`administrator_names`.`patronymic`, 1, 1), '.') as 'user_short_name', 
+                `administration`.`user_role` 
+                FROM `administration` join `administrator_names` on administration.id_name = administrator_names.id_name 
+                where administration.id_user = :id_user", 
+                [
+                    'id_user' => $user_id
+                ]);
+
+        return $user_data;
+    }
+
+
+    function add_history($history_array_data) {
+        global $db;
+    
+        $action_type = [
+            'log in',
+            'edit_user','add_user','delete_user',
+            'view_application', 'solved_application', 'delete_application'
+        ];
+    
+        $add_history = $db->query("INSERT INTO `history`(
+            `id_user`, 
+            `action_type`, 
+            `last_value`, 
+            `new_value`, 
+            `additional_info`, 
+            `timestamp`) 
+            VALUES (
+            :id_user,
+            :action_type,
+            :last_value,
+            :new_value,
+            :additional_info,
+            now())",[
+                'id_user' => $history_array_data['id_user'],
+                'action_type' => $action_type[$history_array_data['action_type']],
+                'last_value' => $history_array_data['last_value'],
+                'new_value' => $history_array_data['new_value'],
+                'additional_info' => $history_array_data['additional_info']
+            ]);
+    }
+
+
+    function change_application_state($id_application) {
+        global $db;
+
+        $check_state = $db->query("SELECT count(*) as 'count' from `applications` where SHA2(`id_application`, 256) = :id_application and `application_state` = 'new'",[
+            'id_application' => $id_application
+        ]);
+
+        if ($check_state[0]['count'] == 1) {
+            $change_state = $db->query("UPDATE `applications` SET `application_state` = 'viewed', `id_user` = :id_user WHERE SHA2(`id_application`, 256) = :id_application",
+            [
+                'id_user' => get_unhashed_user_id(),
+                'id_application' => $id_application
+            ]);
+
+            add_history([
+                'id_user' => get_unhashed_user_id(),
+                'action_type' => 4,
+                'last_value' => NULL,
+                'new_value' => $id_application,
+                'additional_info' => NULL
+            ]);
+        }
+
+
+    }
     
 
 ?>

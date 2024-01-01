@@ -19,6 +19,7 @@
     }
 
     $count_new_applications = get_new_applications_count();
+
 ?>
 
 
@@ -87,7 +88,59 @@
                         break;
 
                     case 'edit_landing':
-                        echo $active_page;
+                        ?>
+
+                        <h2>Social links <i class="fa-solid fa-circle-info"></i></h2>
+                        <div class="socials-blocks">
+                            <div class="social-block">
+                                <div>
+                                    <input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="telegram" disabled>
+                                    <input class="social_link" type="text" name="icon" placeholder="icon class" value="fa-brands fa-telegram" disabled>
+                                    <input class="social_link" type="text" name="link" placeholder="social link" value="https://funpay.com/uk/chips/114/" disabled>
+                                </div>
+                                <div>
+                                    <div class="icon-preview">
+                                        Preview: <i class="fa-brands fa-telegram"></i>
+                                    </div>
+                                    <button id="delete-social" value="11">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="social-block">
+                                <div>
+                                    <input type="text" name="label" placeholder="Social name (alias)" value="telegram">
+                                    <input type="text" name="label" placeholder="icon class" value="fa-brands fa-telegram">
+                                    <input type="text" name="link" placeholder="social link" value="https://funpay.com/uk/chips/114/">
+                                </div>
+                                <div>
+                                    <div class="icon-preview">
+                                        Preview: <i class="fa-brands fa-telegram"></i>
+                                    </div>
+                                    <button id="delete-social" value="11">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <form class="social-block add-social">
+                                <div>
+                                    <input type="text" name="label" placeholder="Social name (alias)" value="">
+                                    <input type="text" name="label" placeholder="icon class" value="">
+                                    <input type="text" name="link" placeholder="social link" value="">
+                                </div>
+                                <div>
+                                    <div class="icon-preview">
+                                        Preview: <i class=""></i>
+                                    </div>
+                                    <button id="delete-social" value="11">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <?php
+
                         break;
 
                     case 'applications':
@@ -138,7 +191,7 @@
                             }
 
                             
-                            echo get_application($entries_on_page, $new_applications, $page_num, $entries_on_page);
+                            echo get_applications($entries_on_page, $new_applications, $page_num, $entries_on_page);
                             
                             ?>
                         

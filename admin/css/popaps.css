@@ -11,7 +11,20 @@
     color: #2f3640;
 }
 
-.popup-error .inline {
+.popup-success {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    transform: translate(-50%,-50%);
+    background-color: #2ecc71;
+    padding: 10px;
+    border-radius: 5px;
+    color: #2f3640;
+}
+
+.popup-error .inline, .popup-success .inline {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -20,8 +33,10 @@
     border-bottom: 1px solid #2f3640;
 }
 
-.popup-error p {
+.popup-error p, .popup-success p {
     display: block;
     padding-top: 5px;
 }
+
+
 

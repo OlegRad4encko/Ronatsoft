@@ -76,6 +76,11 @@
     text-decoration: none;
 }
 
+.nav-socials {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
 .nav-socials li {
     fill: white;
@@ -88,6 +93,14 @@
 
 .nav-socials li a {
     fill: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.nav-socials li i {
+    display: block;
+    text-decoration: none;
+    color:white;
 }
 
 .nav li:last-child, .nav-socials li:last-child{

@@ -91,6 +91,16 @@ $add_user = $db->query("INSERT INTO `administration`
         'password_hashed' => hash("sha256",hash("sha256",$_POST['password']))
     ]);
 
+
+$full_user_name = $_POST['second_name'].' '.$_POST['first_name'].' '.$_POST['patronymic'];
+add_history([
+    'id_user' => get_unhashed_user_id(),
+    'action_type' => 2,
+    'last_value' => NULL,
+    'new_value' => findXSS('['.$_POST['user_role'].'] '.$full_user_name),
+    'additional_info' => NULL
+]);
+
 echo "success";
                    
 
