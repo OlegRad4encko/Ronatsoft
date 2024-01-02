@@ -44,7 +44,8 @@ function add_history($history_array_data) {
     $action_type = [
         'log in',
         'edit_user','add_user','delete_user',
-        'view_application', 'solved_application', 'delete_application'
+        'view_application', 'solved_application', 'delete_application',
+        'add_social_link', 'edit_social_link', 'delete_social_link'
     ];
 
     $add_history = $db->query("INSERT INTO `history`(

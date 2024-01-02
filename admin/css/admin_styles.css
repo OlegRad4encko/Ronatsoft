@@ -64,7 +64,8 @@ body {
 .content {
     display: flex;
     flex-direction: column;
-    justify-content: center
+    justify-content: center;
+    color: #2f3640;
 }
 
 .data-table {
@@ -327,6 +328,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 60px;
 }
 
 .socials-blocks .social-block {
@@ -380,6 +382,16 @@ body {
 .socials-blocks .social-block button:hover {
     color: white;
     background-color: #e74c3c;
+}
+
+.socials-blocks .social-block button[name=save_social] {
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+}
+
+.socials-blocks .social-block button[name=save_social]:hover {
+    color: white;
+    background-color: #2ecc71;
 }
 
 .socials-blocks .add-social button {

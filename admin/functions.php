@@ -50,6 +50,12 @@
 
 
 
+    function generate_form_token() {
+        return $_SESSION['csrf_token'] = substr( str_shuffle( 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' ), 0, 10 );
+    }
+
+
+
 
     # get scripts 
     function get_scripts() {
@@ -59,7 +65,7 @@
             '<script src="js/edit_delete_user.js" crossorigin="anonymous"></script>',
             '<script src="js/add_user.js" crossorigin="anonymous"></script>',
             '<script src="js/change_detele_application.js" crossorigin="anonymous"></script>',
-            ''
+            '<script src="js/social_logic.js" crossorigin="anonymous"></script>'
         ];
 
         $result_string = '';
@@ -536,8 +542,45 @@
                 'additional_info' => NULL
             ]);
         }
+    }
 
+    function get_social_links() {
+        global $db;
 
+        $get_social_links = $db->query("SELECT SHA2(`id_link`, 256) as 'id_link', 
+            `link_label`, 
+            `link_icon_class`, 
+            `link_url` FROM `social_links` WHERE 1");
+
+        if (count($get_social_links) == 0) {
+            generate_CSRF_form_token();
+            return "";
+        }
+
+        $links_view = '';
+        $token = generate_CSRF_form_token();
+
+        for($link = 0; $link < count($get_social_links); $link ++) {
+            $links_view .= '<div class="social-block" id="'.$get_social_links[$link]['id_link'].'">';
+            $links_view .= '<div>';
+            $links_view .= '<input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="'.$get_social_links[$link]['link_label'].'" disabled required>';
+            $links_view .= '<input class="social_link" type="text" name="icon" placeholder="icon class" value="'.$get_social_links[$link]['link_icon_class'].'" disabled required>';
+            $links_view .= '<input class="social_link" type="text" name="link" placeholder="social link" value="'.$get_social_links[$link]['link_url'].'" disabled required>';
+            $links_view .= '<input name="csrf_token" type="hidden" value="'.$token.'" />';
+            
+            $links_view .= '</div>';
+            $links_view .= '<div>';
+            $links_view .= '<div class="icon-preview">';
+            $links_view .= 'Preview: <i name="preview" class="'.$get_social_links[$link]['link_icon_class'].'"></i>';
+            $links_view .= '</div>';
+            $links_view .= '<button name="delete_social" value="'.$get_social_links[$link]['id_link'].'">';
+            $links_view .= '<i class="fa-solid fa-trash"></i>';
+            $links_view .= '</button>';
+            $links_view .= '</div>';
+            $links_view .= '</div>';
+        }
+
+        return $links_view;
     }
     
 
