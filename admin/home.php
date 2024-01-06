@@ -2,15 +2,15 @@
     require_once('functions.php');
 
     if(!isset($_SESSION['name']) || empty($_SESSION['name'])){
-        header("Location: index.php?error=783");
+        header("Location: index.php");
         exit (0);
     }
 
     if(isset($_SESSION['name'])){
         if(checkSession()) {
-          header("Location: index.php");
-          exit (0);
-      }
+            header("Location: index.php");
+            exit (0);
+        }
     } 
 
     $active_page = 'none';
@@ -60,7 +60,7 @@
                     <li><a href="?page=history" id="history" <?php echo ($active_page == 'history')? 'class="active-page"' : '' ?>>History</a></li>
                     <?php } ?>
 
-                    <li><a href="#" id="logout">Logout</a></li>
+                    <li><a href="?page=logout" id="logout">Logout</a></li>
                 </ul>
             </div>
             
@@ -114,7 +114,21 @@
                                 </div>
                             </form>
                         </div>
+
+                        <hr>
+
                         <h2>Edit page <i class="fa-solid fa-circle-info"></i></h2>
+                        <h3>Header section</h3>
+
+                        <h3>Logo section</h3>
+
+                        <h3>About Us section</h3>
+
+                        <h3>Our projects section</h3>
+
+                        <h3>Client Feedbacks section</h3>
+
+                        <h3>Footer section</h3>
 
                         <?php
 
@@ -183,6 +197,10 @@
                         echo $active_page;
                         break;
 
+                    case 'logout':
+                        log_out();
+                        break;
+                    
                     default:
                     ?>
                         <div class="temporary">Select a category to work with</div>

@@ -139,6 +139,33 @@
         return $user_role;
     }
 
+    function log_out() {
+        global $db;
+        global $userhash;
+
+        $session_name = $_SESSION['name'];
+
+        $us_id = $db->query("SELECT `id_user` FROM `sessions` where `session` like :sesname and user_hash like :userhash",
+        [
+          ':sesname' => $session_name,
+          ':userhash' => $userhash
+        ]);
+
+        if(count($us_id) != 0) {
+            $delete_session = $db->query("DELETE FROM `sessions` where `session` like :sesname and user_hash like :userhash", 
+            [
+                ':sesname' => $session_name,
+                ':userhash' => $userhash 
+            ]);
+            $_SESSION['name'] = '';
+        }
+
+        if(checkSession()) {
+            header("Location: index.php");
+            exit (0);
+        }
+    }
+
 
 
     function current_user() {

@@ -67,7 +67,7 @@ if(current_user() == $_POST['id_user']) {
 
         $check_old_pass = $db->query("SELECT count(*) as `count` FROM `administration` WHERE 
             SHA2(`id_user`, 256) = :id_user AND
-            password_hashed` = :old_password",[
+            `password_hashed` = :old_password",[
                 'id_user' => findXSS($_POST['id_user']),
                 'old_password' => hash("sha256",hash("sha256",$_POST['old_password'])),
             ]);
