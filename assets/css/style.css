@@ -66,13 +66,11 @@
 .nav li {
     display: inline-block;
     font-family: 'Open_Sans', sans-serif;
-    color: #ffffff;
     font-size: 20px;
     margin-right: 18px;
 }
 
 .nav li a {
-    color: white;
     text-decoration: none;
 }
 
@@ -83,7 +81,6 @@
 }
 
 .nav-socials li {
-    fill: white;
     display: inline-block;
     font-size: 20px;
     width: 22px;
@@ -92,7 +89,6 @@
 }
 
 .nav-socials li a {
-    fill: white;
     text-decoration: none;
     font-size: 20px;
 }
@@ -100,7 +96,6 @@
 .nav-socials li i {
     display: block;
     text-decoration: none;
-    color:white;
 }
 
 .nav li:last-child, .nav-socials li:last-child{
@@ -159,10 +154,24 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background: white;
+
+    gap: 30px 30px;
+    width: 100%;
+}
+
+.about-us-image {
+    flex: 1 1 auto;
+}
+
+.about-us-image img {
+    width: 100%;
+    height: 100%;
 }
 
 .about-us-text {
+    flex: 1 1 auto;
     max-width: 50%;
 }
 
@@ -232,10 +241,14 @@ a {
     align-items: center;
     height: 225px;
     width: 350px;
+    font-size: 40px;
+    text-decoration: none;
+    color: #47484d;
+    font-family:'Courier New', Courier, monospace;
 }
 
 .wrapper .element img {
-    max-width: 80px;
+    max-width: 180px;
 }
 
 
@@ -489,6 +502,16 @@ a {
         padding-left: 20px;
         padding-right: 20px;
     }
+    .about-us {
+        flex-direction: column;
+    }
+    .about-us .about-us-text {
+        max-width: 100%;
+    }
+    .about-us .about-us-image {
+        width: 100%;
+        flex-grow: 1;
+    }
 }
 
 
@@ -497,6 +520,16 @@ a {
     .side-paddings {
         padding-left: 50px;
         padding-right: 50px;
+    }
+    .about-us {
+        flex-direction: column;
+    }
+    .about-us .about-us-text {
+        max-width: 100%;
+    }
+    .about-us .about-us-image {
+        width: 100%;
+        flex-grow: 1;
     }
 }
 

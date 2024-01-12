@@ -1,5 +1,5 @@
 function add_new_block(link_id, icon, label, link, token) {
-    var block_string = '<div class="social-block" id="'+ link_id +'"><div>';
+    var block_string = '<div class="social-block" id="soc_'+ link_id +'"><div>';
     block_string += '<input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="'+ label +'" disabled required>';
     block_string += '<input class="social_link" type="text" name="icon" placeholder="icon class" value="'+ icon +'" disabled required>';
     block_string += '<input class="social_link" type="text" name="link" placeholder="social link" value="'+ link +'" disabled required>';
@@ -35,7 +35,7 @@ function delete_social() {
                     });
                 }
                 if(data.indexOf('success') != -1) {
-                    $('#' + delete_data['id_link']).remove();
+                    $('#soc_' + delete_data['id_link']).remove();
                 }
             }
         });
@@ -70,12 +70,11 @@ function save_changes() {
             }
 
             if(data.indexOf('success') != -1) {
-                console.log("dddd");
-                $('#'+update_data['id_link']).find('.social_link').prop('disabled', true);
-                $('#'+update_data['id_link']).find('[name=save_social]').off('click', save_changes);
-                $('#'+update_data['id_link']).find('[name=save_social]').prop('name', 'delete_social');
-                $('#'+update_data['id_link']).find('[name=delete_social]').html('<i class="fa-solid fa-trash"></i>');
-                $('#'+update_data['id_link']).find('[name=delete_social]').on('click', delete_social);
+                $('#soc_'+update_data['id_link']).find('.social_link').prop('disabled', true);
+                $('#soc_'+update_data['id_link']).find('[name=save_social]').off('click', save_changes);
+                $('#soc_'+update_data['id_link']).find('[name=save_social]').prop('name', 'delete_social');
+                $('#soc_'+update_data['id_link']).find('[name=delete_social]').html('<i class="fa-solid fa-trash"></i>');
+                $('#soc_'+update_data['id_link']).find('[name=delete_social]').on('click', delete_social);
             }
         }
     });
@@ -110,8 +109,8 @@ $(document).ready(function () {
                 } else {
                     var link_data = $.parseJSON(data);
                     add_new_block(link_data['hached_id'], link_data['icon'], link_data['label'], link_data['link'], link_data['csrf_token']);
-                    $('#'+link_data['hached_id']).find('[name=delete_social]').on('click', delete_social);
-                    $('#'+link_data['hached_id']).find('.social_link').dblclick(edit_social);
+                    $('#soc_'+link_data['hached_id']).find('[name=delete_social]').on('click', delete_social);
+                    $('#soc_'+link_data['hached_id']).find('.social_link').dblclick(edit_social);
                     $('form.add-social').find('input[type=text]').val('');
                 }           
             }

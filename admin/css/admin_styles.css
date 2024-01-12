@@ -419,7 +419,169 @@ body {
     margin-bottom: 15px;
 }
 
+.edit-landing {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
 
+.edit-landing hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.edit-landing .inline {
+    gap: 0px 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.edit-landing .inline > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0px 15px;
+    flex-wrap: wrap;
+}
+
+.edit-landing .gap1 {
+    gap: 10px 30px;
+}
+
+.edit-landing .gap2 {
+    gap: 10px 30px;
+}
+
+
+.edit-landing input[type=text], input[type=number] {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #2f3640;
+}
+
+.edit-landing select {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #2f3640;
+}
+
+.edit-landing .inline-right {
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    margin-bottom: 0px;
+}
+
+.edit-landing button[type=submit] {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #2ecc71;
+    color:#2ecc71;
+    border-radius: 5px;
+    transition: .2s;
+}
+
+.edit-landing button[type=submit]:hover {
+    background-color: #2ecc71;
+    border: 1px solid #2ecc71;
+    color: white;
+}
+
+h4 {
+    margin-top: 20px;
+}
+
+
+.project {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    max-width: 1000px;
+    gap: 0px 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.project button[name=save_project] {
+    border-radius: 5px;
+    border: 1px solid #2ecc71;
+    background-color: white;
+    color: #2ecc71;
+    padding: 10px 10px;
+    transition: .2s;
+}
+
+.project button[name=save_project]:hover {
+    border: 1px solid #2ecc71;
+    background-color: #2ecc71;
+    color: white;
+}
+
+.project button[name=delete_project] {
+    border-radius: 5px;
+    border: 1px solid #e74c3c;
+    background-color: white;
+    color: #e74c3c;
+    padding: 10px 10px;
+    transition: .2s;
+}
+
+.project button[name=delete_project]:hover {
+    border: 1px solid #e74c3c;
+    background-color: #e74c3c;
+    color: white;
+}
+
+.project .project-data input[disabled] {
+    border: 1px solid white;
+    background-color: white;
+}
+
+.add-project button[type=submit] {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #2ecc71;
+    color:#2ecc71;
+    border-radius: 5px;
+    transition: .2s;
+}
+
+.add-project button[type=submit]:hover {
+    background-color: #2ecc71;
+    border: 1px solid #2ecc71;
+    color: white;
+}
+
+
+
+.project-data {
+    display: flex;
+    flex-direction: row;
+    gap: 10px 30px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.project-data div {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-data input {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.project-data button {
+    align-self: self-end;
+}
 
 @media only screen and (max-width: 859px) {
     .application > .user_message > textarea {

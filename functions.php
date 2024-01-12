@@ -61,4 +61,62 @@
     }
 
 
+    # get_header_custom_data
+    function get_section_custom_data($section) {
+        if(empty($section)) {
+            return 0;
+        }
+
+        global $db;
+        
+        $section_data = $db->query("SELECT `section_content` from `page_sections` where `section_name` = :section_name",[
+            'section_name' => $section
+        ]);
+        return json_decode($section_data[0]['section_content'], true);
+    } 
+
+    function get_link_data($id) {
+        global $db;
+        $link_data = $db->query("SELECT `link_icon_class`, `link_url` from `social_links` where SHA2(`id_link`, 256) = :id",[
+            'id' => $id
+        ]);
+        return $link_data[0];
+    }
+
+    function get_projects($blocks) {
+        global $db;
+
+        $check_count_of_project = $db->query("SELECT COUNT(*) as 'count' from `our_projects` where 1");
+
+
+        $projects = '';
+        $project_block = '';
+
+
+        if($check_count_of_project[0]['count'] <= $blocks) {
+            $projects = $db->query("SELECT * from `our_projects` where 1");
+        } else {
+            $projects = $db->query("SELECT * from `our_projects` where 1 order by rand() limit :blocks", [
+                'blocks' => $blocks
+            ]);
+        }
+
+        for ($prjct=0; $prjct < count($projects); $prjct++) { 
+            $project_block .= '<a class="element" href="'.$projects[$prjct]['project_link'].'"  target="_blank">';
+            if($projects[$prjct]['project_image'] == '') {
+                $project_block .= $projects[$prjct]['project_text'];
+            } else {
+                $project_block .= '<img src="'.$projects[$prjct]['project_image'].'">';
+            }
+            $project_block .= '</a>';
+        }
+
+        return $project_block;
+
+        
+            
+        
+
+    }
+
 ?>

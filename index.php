@@ -14,13 +14,48 @@
 </head>
 <body>
     <div class="root">
-
-        <div class="header side-paddings">
+        <?php  
+        
+        $header_data = get_section_custom_data('header_section');
+        $logo_data = get_section_custom_data('logo_section');
+        $about_us_data = get_section_custom_data('about_us_section');
+        $projects_data = get_section_custom_data('our_projects_section');
+                
+        ?>
+        <div class="header side-paddings" style="background-color: <?php echo $header_data['header_background_color'] ?>">
             <div class="header-logo">
+                <?php if($header_data['logo_type'] == 1 or $header_data['logo_type'] == 2) { ?>
                 <h1 class="logo-text">
-                    <span class="first-part">Ronat</span>
-                    <span class="second-part">soft</span>
+                    <?php if($header_data['logo_type'] == 1) { ?>
+                        <span style="color: <?php echo $header_data['logo_text'] ?>;"><?php echo $header_data['logo_color'] ?></span>
+                    <?php } 
+                        if($header_data['logo_type'] == 2) {
+                    ?>
+                        <span class="first-part" style="color: <?php echo $header_data['logo_first_part_color'] ?>;"><?php echo $header_data['logo_first_part_text']; ?></span>
+                        <span class="second-part" style="color: <?php echo $header_data['logo_second_part_text'] ?>;"><?php echo $header_data['logo_second_part_text']; ?></span>
+                    <?php
+                        }
+                        
+                    ?>
+
+                    
                 </h1>
+                <?php } 
+                
+                if($header_data['logo_type'] == 3) {
+                    if($header_data['logo_image'] == 1) {
+                    ?>
+                        <img src="<?php echo "site-images/header-logo.png" ?>" alt="Logo" width="" height="150">
+                    <?php
+                    } 
+                    if($header_data['logo_image'] == 2) {
+                    ?>
+                        <img src="<?php echo $header_data['logo_image_link'] ?>" alt="Logo" width="" height="150">
+                    <?php
+                    }
+                }
+
+                ?>
             </div>
 
             <div class="header-menu">
@@ -28,101 +63,115 @@
 
                 <ul class="nav">
                     <li>
-                        <a href="#our-projects">Projects</a>
+                        <a href="#our-projects" style="color: <?php echo $header_data['header_text_color'] ?>">Projects</a>
                     </li>
                     <li>
-                        <a href="#customer-reviews">Customers Reviews</a>
+                        <a href="#customer-reviews" style="color: <?php echo $header_data['header_text_color'] ?>">Customers Reviews</a>
                     </li>
                     <li>
-                        <a href="#about-us">About Us</a>
+                        <a href="#about-us" style="color: <?php echo $header_data['header_text_color'] ?>">About Us</a>
                     </li>
                     <li>
-                        <a href="#contsct-us">Contact Us</a>
+                        <a href="#contsct-us" style="color: <?php echo $header_data['header_text_color'] ?>">Contact Us</a>
                     </li>
                 </ul>
                 <ul class="nav-socials">
-                    <li>
-                        <a href="">
-                            <i class="fa-brands fa-telegram"></i>
-                        </a>
-                   </li>
-                   <li>
-                        <a href="">
-                            <i class="fa-brands fa-telegram"></i>
-                        </a>
-                   </li>
-                   <li>
-                        <a href="">
-                            <i class="fa-brands fa-telegram"></i>
-                        </a>
-                   </li>
+                    <?php if($header_data['soc_link1'] != 0) {
+                        $link_data = get_link_data($header_data['soc_link1']);
+                        ?>
+                            <li>
+                                <a href="<?php echo $link_data['link_url'] ?>"  target="_blank">
+                                    <i class="<?php echo $link_data['link_icon_class'] ?>" style="color: <?php echo $header_data['header_text_color'] ?>"></i>
+                                </a>
+                            </li>
+                        <?php
+                    }                   
+                    if($header_data['soc_link2'] != 0) {
+                        $link_data = get_link_data($header_data['soc_link2']);
+                        ?>
+                            <li>
+                                <a href="<?php echo $link_data['link_url'] ?>"  target="_blank">
+                                    <i class="<?php echo $link_data['link_icon_class'] ?>" style="color: <?php echo $header_data['header_text_color'] ?>"></i>
+                                </a>
+                            </li>
+                        <?php
+                    } 
+                    if($header_data['soc_link3'] != 0) {
+                        $link_data = get_link_data($header_data['soc_link3']);
+                        ?>
+                            <li>
+                                <a href="<?php echo $link_data['link_url'] ?>"  target="_blank">
+                                    <i class="<?php echo $link_data['link_icon_class'] ?>" style="color: <?php echo $header_data['header_text_color'] ?>"></i>
+                                </a>
+                            </li>
+                        <?php
+                    } ?>
                 </ul>
 
             </div>
 
         </div>
 
-        <div class="logo-block side-paddings">
 
+        <div class="logo-block side-paddings" <?php echo ($logo_data['logo_section_background'] == 1) ? 'style="background-image: url(site-images/logo-background-image.png)"' : '' ?>
+        <?php echo ($logo_data['logo_section_background'] == 2) ? 'style="background-image: url(); background-color: '.$logo_data['background_color'].'"' : '' ?>>
             <div>
-                <span class="logo-welcome">welcome to</span>
-                <h1>Ronatsoft</h1>
+                <span class="logo-welcome"><?php echo $logo_data['wellcome_text'] ?></span>
+                <h1><?php echo $logo_data['company_name'] ?></h1>
                 <span class="slogan">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor est risus, eu egestas orci condimentum eu.
+                    <?php echo $logo_data['slogan_text'] ?>
                 </span>
             </div>
-
         </div>
 
-        <div id="about-us" class="about-us side-paddings">
-            <div class="about-us-text">
-                <h1>About Us</h1>
-                <p class="p1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor est risus, eu egestas orci condimentum eu. Phasellus lobortis nec orci quis scelerisque. Aenean elementum tortor a augue luctus sodales.</p>
-                <p class="p2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor est risus, eu egestas orci condimentum eu. Phasellus lobortis nec orci quis scelerisque. Aenean elementum tortor a augue luctus sodales. Duis at odio quis velit finibus tristique nec non felis. Vestibulum quis massa at ligula hendrerit bibendum. Cras ultrices libero faucibus turpis vehicula consectetur sit amet id enim. Integer ut fermentum elit. Morbi gravida elit eu vulputate eleifend.</p>
+
+        <div id="about-us" class="about-us side-paddings" <?php echo 'style="background-color: '.$about_us_data['about_us_background_color'].'"' ?>>
+            <div class="about-us-text" <?php  ?>>
+                <h1 <?php echo 'style="color: '.$about_us_data['about_us_text_color'].'"' ?>><?php echo $about_us_data['displayed_about_section_name'] ?></h1>
+                <p class="p1" <?php echo 'style="color: '.$about_us_data['about_us_text_color'].'"' ?>><?php echo $about_us_data['paragraph1'] ?></p>
+                <p class="p2" <?php echo 'style="color: '.$about_us_data['about_us_text_color'].'"' ?>><?php echo $about_us_data['paragraph2'] ?></p>
             </div>
-            <div>
-                <!-- maybe images here -->
+            <div class="about-us-image">
+                <?php  
+                
+                if($about_us_data['image_set'] == 'true') {
+                    switch ($about_us_data['about_us_image_type']) {
+                        case '1':
+                            ?>
+                                <img src="<?php echo "site-images/about-us-image.png" ?>" alt="about-us-image">
+                            <?php
+                            break;
+                        case '2':
+                            ?>
+                                <img src="<?php echo $about_us_data['about_us_image_link'] ?>" alt="about-us-image">
+                            <?php
+                            break;
+                        default:
+                            echo '';
+                            break;
+                    }
+                }
+                
+                ?>
+
             </div>
         </div>
 
-        <div id="our-projects" class="our-projects side-paddings">
-            <h1>Our projects</h1>
+
+        <div id="our-projects" class="our-projects side-paddings" style="
+            background: -webkit-linear-gradient(225deg, <?php echo $projects_data['from_color_gradient'] ?> 19%, <?php echo $projects_data['to_color_gradient'] ?> 100%);
+            background: -moz-linear-gradient(225deg, <?php echo $projects_data['from_color_gradient'] ?> 19%, <?php echo $projects_data['to_color_gradient'] ?> 100%);
+            background: linear-gradient(225deg, <?php echo $projects_data['from_color_gradient'] ?> 19%, <?php echo $projects_data['to_color_gradient'] ?> 100%);
+        ">
+            <h1><?php echo $projects_data['displayed_projects_section_name'] ?></h1>
             <div class="wrapper">
-                <a class="element" href="#">
-                    <img src="assets/images/atomic.png">
-                </a>
-                <a class="element" href="#">
-                    <img src="assets/images/social.png">
-                </a>
-                <a class="element" href="#">
-                    <img src="assets/images/twitter.png">
-                </a>
+                <?php echo get_projects($projects_data['count_projects_blocks']) ?>
             </div>
-
         </div>
 
         <div id="customer-reviews" class="feedbacks side-paddings">
             <h1>Client Feedbacks</h1>
             <div class="feedbacks-block">
-
-
-                <div class="feedback left">
-                    <div class="client-info">
-                        <div class="client-image">
-                            <img src="assets/images/clients/client_example.jpg" alt="">
-
-                        </div>
-                        <div class="client-name-position">
-                            <span>Name Surname</span>
-                            <span>New customer</span>
-                            <span>01\01\2023</span>
-                        </div>
-                    </div>
-                    <div class="client-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vulputate urna vitae odio rutrum porta. Donec sed dui justo. Mauris faucibus sodales suscipit. Vivamus accumsan pulvinar metus eu pellentesque. Phasellus dictum nisi lectus, vitae molestie erat tristique a. Nam gravida sed eros sit amet vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer placerat neque et quam ornare placerat. Praesent mauris turpis, condimentum pharetra erat at, faucibus tincidunt diam. Donec dignissim velit nec augue imperdiet, nec ultrices elit lacinia. Curabitur augue magna, malesuada at turpis et, porta ullamcorper odio. Vestibulum viverra nisi ut vulputate feugiat.
-                    </div>
-                </div>
-
 
                 <div class="feedback right">
                     <div class="client-info">
@@ -142,43 +191,6 @@
                         Lorem ipsum dolor sit amet
                     </div>
                 </div>
-
-                <div class="feedback left">
-                    <div class="client-info">
-                        <div class="client-image">
-                            <img src="assets/images/clients/client_example.jpg" alt="">
-
-                        </div>
-                        <div class="client-name-position">
-                            <span>Name Surname</span>
-                            <span>New customer</span>
-                            <span>01\01\2023</span>
-                        </div>
-                    </div>
-                    <div class="client-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vulputate urna vitae odio rutrum porta. Donec sed dui justo. 
-                    </div>
-                </div>
-
-                <div class="feedback right">
-                    <div class="client-info">
-                        <div class="client-image">
-                            <!-- <img src="" alt=""> -->
-
-                            <!-- default -->
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="client-name-position">
-                            <span>Name Surname</span>
-                            <span>New customer</span>
-                            <span>01\01\2023</span>
-                        </div>
-                    </div>
-                    <div class="client-text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vulputate urna vitae odio rutrum porta. Donec sed dui justo. 
-                    </div>
-                </div>
-
 
             </div>
         </div>

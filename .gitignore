@@ -1,2 +1,4 @@
 database/config.php
 database/config_prod.php
+
+site-images/

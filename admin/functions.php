@@ -7,7 +7,7 @@
     $userhash = hash("sha256",hash("sha256",$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']));
     
 
-
+    $token = generate_CSRF_form_token();
 
 
     function take_first_char_from_str($str) {
@@ -65,7 +65,11 @@
             '<script src="js/edit_delete_user.js" crossorigin="anonymous"></script>',
             '<script src="js/add_user.js" crossorigin="anonymous"></script>',
             '<script src="js/change_detele_application.js" crossorigin="anonymous"></script>',
-            '<script src="js/social_logic.js" crossorigin="anonymous"></script>'
+            '<script src="js/social_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/header_section_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/logo_section_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/about_us_section_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/our_projects_section_logic.js" crossorigin="anonymous"></script>'
         ];
 
         $result_string = '';
@@ -584,11 +588,12 @@
             return "";
         }
 
+        global $token;
+
         $links_view = '';
-        $token = generate_CSRF_form_token();
 
         for($link = 0; $link < count($get_social_links); $link ++) {
-            $links_view .= '<div class="social-block" id="'.$get_social_links[$link]['id_link'].'">';
+            $links_view .= '<div class="social-block" id="soc_'.$get_social_links[$link]['id_link'].'">';
             $links_view .= '<div>';
             $links_view .= '<input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="'.$get_social_links[$link]['link_label'].'" disabled required>';
             $links_view .= '<input class="social_link" type="text" name="icon" placeholder="icon class" value="'.$get_social_links[$link]['link_icon_class'].'" disabled required>';
@@ -608,6 +613,85 @@
         }
 
         return $links_view;
+    }
+
+    function get_socials_for_select($id) {
+        global $db;
+        $get_social_links = $db->query("SELECT SHA2(`id_link`, 256) as 'id_link', 
+        `link_label` FROM `social_links` WHERE 1");
+
+        $pass = 0;
+        
+
+        $options1part = '<option value="0">Select link</option>';
+        $options2part = '';
+
+        for ($i=0; $i < count($get_social_links); $i++) {
+            if($get_social_links[$i]['id_link'] == $id) {
+                $options2part .= '<option value="'.$get_social_links[$i]['id_link'].'" selected>'.$get_social_links[$i]['link_label'].'</option>';
+                $pass = 1;
+            } else {
+                $options2part .= '<option value="'.$get_social_links[$i]['id_link'].'">'.$get_social_links[$i]['link_label'].'</option>';
+            }
+            
+        }
+
+        if ($pass == 0) {
+            $options1part = '<option value="0" selected>Select link</option>';
+        }
+
+
+        $options = $options1part.$options2part;
+        echo $options;
+    }
+
+    function get_section_data($section) {
+        if(empty($section)) {
+            return 0;
+        }
+
+        global $db;
+        
+        $section_data = $db->query("SELECT `section_content` from `page_sections` where `section_name` = :section_name",[
+            'section_name' => $section
+        ]);
+        return json_decode($section_data[0]['section_content'], true);
+    }
+
+    function get_projects() {
+        global $db;
+
+        $projects_block = '';
+
+        $projects_data = $db->query("SELECT SHA2(`id_project`, 256) as 'project_id', `project_link`, `project_image`, `project_text` from `our_projects`");
+        if(count($projects_data) == 0) {
+           return $projects_block;
+        }
+
+        global $token;
+
+
+        for ($project=0; $project < count($projects_data); $project++) { 
+            $projects_block .= '<div class="project" id="proj_'.$projects_data[$project]['project_id'].'">';
+            $projects_block .= '<div class="project-data">';
+            $projects_block .= '<input name="csrf_token" type="hidden" value="'.$token.'" />';
+            $projects_block .= '<div>';
+            $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_link">Project link</label>';
+            $projects_block .= '<input type="text" name="project_link" id="pr_'.$projects_data[$project]['project_id'].'_link" value="'.$projects_data[$project]['project_link'].'" disabled>';
+            $projects_block .= '</div>';
+            $projects_block .= '<div>';
+            $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_image_link">Project image link</label>';
+            $projects_block .= '<input type="text" name="project_image_link" id="pr_'.$projects_data[$project]['project_id'].'_image_link" value="'.$projects_data[$project]['project_image'].'" disabled>';
+            $projects_block .= '</div><div>';
+            $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_text">Project text</label>';
+            $projects_block .= '<input type="text" name="project_text" id="pr_1_text" value="'.$projects_data[$project]['project_text'].'" disabled>';
+            $projects_block .= '</div></div>';
+            $projects_block .= '<button name="delete_project" value="'.$projects_data[$project]['project_id'].'"><i class="fa-solid fa-trash" aria-hidden="true"></i></button></div>';
+        }
+
+        echo $projects_block;
+
+
     }
     
 
