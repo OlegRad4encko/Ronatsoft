@@ -388,13 +388,14 @@ a {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1000px;
+    max-width: 700px;
 }
 
 .contact-us form .form-horisontal {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     flex-wrap: wrap;
     gap: 0px 40px;
@@ -424,7 +425,6 @@ a {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 20px 40px;
 }
 
 .contact-us form .user-message label {
@@ -500,6 +500,23 @@ a {
     font-size: 16px;
 }
 
+.submit input {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    transition: .2s;
+    /*display: table-row; */
+}
+
+.submit input:hover {
+    background: #27282C;
+    color: white;
+}
+
+
+
 
 
 /* Mob */
@@ -540,11 +557,19 @@ a {
 }
 
 
-/* Desktop 
-@media only screen and (min-width: 1025px) {
 
+@media only screen and (max-width: 798px) {
+    .contact-us form .form-horisontal {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .contact-us form .user-message {
+        max-width: 321px;
+    }
 }
-*/
+
 
 
 

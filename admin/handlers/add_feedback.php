@@ -103,6 +103,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'feedback_id' => $new_image_name_query[0]['feedback_id']
         ]);
     }
+
+    $history_data = $db->query("SELECT `user_first_name`, 
+    `user_second_name`, `image_name`, `user_type`, 
+    `publish_date`, `users_text` from `feedbacks` 
+    where `feedback_id` = (SELECT max(`feedback_id`) from `feedbacks` WHERE 1)");
+
+    $new_data = array_encode_json($history_data[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 10,
+        'last_value' => NULL,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
+
     echo "success";
 
 

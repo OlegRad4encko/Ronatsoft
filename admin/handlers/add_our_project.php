@@ -42,6 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'project_text' => findXSS($project_text)
     ]);
 
+    $history_data = $db->query("SELECT `project_link`, 
+    `project_image`, `project_text` from `our_projects` 
+    where `id_project` = (SELECT max(`id_project`) from `our_projects` WHERE 1)");
+
+    $new_data = array_encode_json($history_data[0]);
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 13,
+        'last_value' => NULL,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
+
     $last_project_query = $db->query("SELECT SHA2(`id_project`, 256) as 'project_id', `project_link`, `project_image`, `project_text` from `our_projects` where `id_project` = (SELECT max(`id_project`) from `our_projects` where 1)");
 
     $new_project_data = [
@@ -51,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'project_image' => $last_project_query[0]['project_image'],
         'project_text' => $last_project_query[0]['project_text']
     ];
+
+
 
     echo array_encode_json($new_project_data);
 

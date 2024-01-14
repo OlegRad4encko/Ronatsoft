@@ -49,6 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'to_color_gradient' => findXSS($to_color_gradient)
     ];
 
+
+    $history_data_old = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'our_projects_section'");
+
+
     $json_our_project_data = array_encode_json($our_projects_data);
 
     $check_the_section = $db->query("SELECT count(*) as 'count' FROM `page_sections` WHERE `section_name` = 'our_projects_section'");
@@ -64,6 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
     
+
+    $history_data_new = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'our_projects_section'");
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 19,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
+
 
     echo build_success_block('Our Projects section data is saved');
 

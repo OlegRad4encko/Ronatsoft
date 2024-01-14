@@ -115,6 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $about_us_text_color = $_POST['about_us_text_color'];
     $about_us_background_color = $_POST['about_us_background_color'];
 
+    $history_data_old = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'about_us_section'");
+
     $about_us_section_data = [
         'displayed_about_section_name' => findXSS($displayed_about_section_name),
         'paragraph1' => findXSS($paragraph1),
@@ -141,6 +145,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'section_content' => $new_about_us_section_data
         ]);
     }
+
+    $history_data_new = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'about_us_section'");
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 18,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
     
 
     echo build_success_block('About Us section data is saved');

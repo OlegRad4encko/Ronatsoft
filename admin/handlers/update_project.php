@@ -36,6 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    $history_data_old = $db->query("SELECT `project_link`, 
+    `project_image`, `project_text` from `our_projects` 
+    WHERE SHA2(`id_project`, 256) = :project_id", [
+        'project_id' => findXSS($_POST['project_id'])
+    ]);
+
     $project_link = $_POST['project_link'];
     $project_image_link = $_POST['project_image_link'];
     $project_text = $_POST['project_text'];
@@ -45,6 +51,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'project_image_link' => findXSS($_POST['project_image_link']),
         'project_text' => findXSS($_POST['project_text']),
         'project_id' => findXSS($_POST['project_id'])
+    ]);
+
+    $history_data_new = $db->query("SELECT `project_link`, 
+    `project_image`, `project_text` from `our_projects` 
+    WHERE SHA2(`id_project`, 256) = :project_id", [
+        'project_id' => findXSS($_POST['project_id'])
+    ]);
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 14,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
     ]);
 
     echo build_success_block('Project data is saved');

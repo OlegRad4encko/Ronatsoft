@@ -191,6 +191,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+    $history_data_old = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'header_section'");
+
+
+
     $new_header = [
         'logo_type' => $logo_type,
         'logo_text' => ($logo_text) ? findXSS($logo_text) : NULL,
@@ -226,6 +232,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'section_content' => $new_header_data
         ]);
     }
+
+    $history_data_new = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'header_section'");
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 16,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
     
 
     echo build_success_block('Header data is saved');

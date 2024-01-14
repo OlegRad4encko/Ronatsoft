@@ -70,7 +70,9 @@
             '<script src="js/logo_section_logic.js" crossorigin="anonymous"></script>',
             '<script src="js/about_us_section_logic.js" crossorigin="anonymous"></script>',
             '<script src="js/our_projects_section_logic.js" crossorigin="anonymous"></script>',
-            '<script src="js/feedbacks_logic.js" crossorigin="anonymous"></script>'
+            '<script src="js/feedbacks_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/footer_section_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/view_history_data.js" crossorigin="anonymous"></script>'
         ];
 
         $result_string = '';
@@ -735,6 +737,63 @@
         
         $feedback_table .= '</table>';
         return $feedback_table;
+    }
+
+    function get_history_table() {
+        global $db;
+        $history_table = '';
+
+        $check_history_count = $db->query("SELECT count(*) as 'count' from `history` where 1");
+        if($check_history_count[0]['count'] == 0) {
+            return '<div>Empty history list.</div>';
+        }
+
+        $additional_information = [
+            'log in' => "logged in.",
+            'edit_user' => "Edit user data: ",
+            'add_user' => "Add new user: ",
+            'delete_user' => "Delete user",
+            'view_application' => "View application: ", 
+            'solved_application' => "Make application solved: ", 
+            'delete_application' => "Delete application: ",
+            'add_social_link' => "Added social link: ", 
+            'edit_social_link' => "Edit social link: ", 
+            'delete_social_link' => "Delete social link: ",
+            'add_feedback' => "Added new feedback: ", 
+            'edit_feedback' => "Edit feedback: ", 
+            'delete_feedback' => "Delete feedback: ",
+            'add_project' => "Added new project: ", 
+            'edit_project' => "Edit project: ", 
+            'delete_project' => "Delete project: ",
+            'edit_header_section' => "Edit the header section: ", 
+            'edit_logo_section' => "Edit the logo section: ", 
+            'edit_about_us_section' => "Edit the about us section: ",
+            'edit_our_project_section' => "Edit the our project section: ",
+            'edit_feedback_section' => "Edit the customers feedback section: ",
+            'edit_footer_section' => "Edit the footer section: "
+        ];
+
+        $history = $db->query("SELECT concat(`administrator_names`.`second_name`, ' ', SUBSTRING(`administrator_names`.`first_name`, 1, 1), '. ', SUBSTRING(`administrator_names`.`patronymic`, 1, 1), '.') as 'user_short_name', `history`.`action_type` as 'action_type', `history`.`timestamp` as 'timestamp', SHA2(`history`.`id_action`, 256) as `id_action` from `history` join `administration` on `administration`.`id_user` = `history`.`id_user` join `administrator_names` on  `administration`.`id_name` = `administrator_names`.`id_name` where 1 order by `history`.`id_action` desc");
+
+        $history_table .= '<table class="data-table">';
+        $history_table .= '<tr>';
+        $history_table .= '<th>User</th>';
+        $history_table .= '<th>Action \ Data</th>';
+        $history_table .= '<th>Date</th>';
+        $history_table .= '</tr>';
+        for ($i=0; $i < count($history); $i++) { 
+            $history_table .= '<tr>';
+            $history_table .= '<td>'.$history[$i]['user_short_name'].'</td>';
+            $history_table .= '<td>'.$additional_information[$history[$i]['action_type']];
+            if($history[$i]['action_type'] != 'log in') {
+                $history_table .= '<button class="normal" name="history_additional_info" value="'.$history[$i]['id_action'].'">view data</button>';
+            }
+            $history_table .= '</td>';
+            $history_table .= '<td style="display: grid; align-content: center;}">'.$history[$i]['timestamp'].'</td>';
+        }
+        $history_table .= '</table>';
+        return $history_table;
+
     }
     
 

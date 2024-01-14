@@ -74,6 +74,10 @@
                 
                 switch($active_page) {
                     case 'users':
+
+                        if(get_user_role() != "admin") {
+                            header("location: home.php");
+                        }
                         
                         echo get_users_table();
                         ?>
@@ -476,8 +480,35 @@
 
                         
 
-                        <h3>Footer section</h3>
-                        <!-- confirming of deleting applications -->
+                        <h3>Footer section</h3><?php $feedbacks = get_section_data('footer_section'); ?>
+                        <form class="edit-landing" id="footer_section_form">
+                            <input name="csrf_token" type="hidden" value="<?php echo $CSFR_token; ?>" />
+
+                            <div class="inline gap2">
+                                <div class="inline-block">
+                                    <label for="footer_company_name">Company name</label>
+                                    <input id="footer_company_name" type="text" name="displayed_footer_company_name" value="<?php echo $feedbacks['company_name'] ?>" placeholder="Company name" required>
+                                </div>
+                                <div class="inline-block">
+                                    <label for="rights_text">Rights text</label>
+                                    <input id="rights_text" type="text" name="rights_text" value="<?php echo $feedbacks['rights_text'] ?>" placeholder="Rights text" required>
+                                </div>
+                            </div>
+                            <div class="inline gap2">
+                                <div class="inline-block">
+                                    <label for="background_footer_color">Background color</label>
+                                    <input id="background_footer_color" type="color" name="background_footer_color" value="<?php echo $feedbacks['background_color'] ?>" placeholder="background_footer_color" required>
+                                </div>
+                                <div class="inline-block">
+                                    <label for="footer_text_color">Text color</label>
+                                    <input id="footer_text_color" type="color" name="footer_text_color" value="<?php echo $feedbacks['text_color'] ?>" placeholder="footer_text_color" required>
+                                </div>
+                            </div>
+
+                            <div class="inline gap1 inline-right">
+                                <button type="submit"><i class="fa-regular fa-floppy-disk"></i></button>
+                            </div>
+                        </form>
 
                         <?php
 
@@ -532,7 +563,13 @@
                         break;
 
                     case 'history':
-                        echo $active_page;
+                        
+                        if(get_user_role() != "admin") {
+                            header("location: home.php");
+                        }
+
+                        echo get_history_table();
+
                         break;
 
                     case 'logout':
@@ -553,3 +590,5 @@
         <?php echo get_scripts() ?>
     </body>
 </html>
+
+<!-- сделать нормальный вид истории -->

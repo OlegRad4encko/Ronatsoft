@@ -105,6 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'background_color' => ($background_color) ? findXSS($background_color) : NULL,
     ];
 
+    $history_data_old = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'logo_section'");
+
     $new_logo_section = array_encode_json($logo_section);
 
     $check_the_section = $db->query("SELECT count(*) as 'count' FROM `page_sections` WHERE `section_name` = 'logo_section'");
@@ -119,6 +123,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'section_content' => $new_logo_section
         ]);
     }
+
+    $history_data_new = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'logo_section'");
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 17,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
     
 
     echo build_success_block('Logo section data is saved');

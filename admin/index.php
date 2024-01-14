@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="css/popaps.css">
     </head>
     <body>
+        <?php // echo hash("sha256",hash("sha256", 'admin1')) ?>
         <form class="login" id="login" method="POST" action="">
             <input name="csrf_token" type="hidden" value="<?php echo generate_CSRF_form_token() ?>">
             <input name="login" type="text" placeholder="Login">

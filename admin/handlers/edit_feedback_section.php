@@ -48,6 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'feedback_background_color' => $feedback_background_color
     ];
 
+
+    $history_data_old = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'feedback_section'");
+
+
     $new_feedback_section_data = array_encode_json($feedback_section_data);
 
     $check_the_section = $db->query("SELECT count(*) as 'count' FROM `page_sections` WHERE `section_name` = 'feedback_section'");
@@ -63,6 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
     
+
+    $history_data_new = $db->query("SELECT `section_name`, 
+    `section_content` from `page_sections` 
+    WHERE `section_name` = 'feedback_section'");
+
+    $new_data = array_encode_json($history_data_new[0]);
+    $old_data = array_encode_json($history_data_old[0]);
+
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 20,
+        'last_value' => $old_data,
+        'new_value' => $new_data,
+        'additional_info' => NULL
+    ]);
+
 
     echo build_success_block('Feedback section data is saved');
 

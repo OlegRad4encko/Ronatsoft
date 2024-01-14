@@ -21,6 +21,7 @@
         $about_us_data = get_section_custom_data('about_us_section');
         $projects_data = get_section_custom_data('our_projects_section');
         $feedbacks_data = get_section_custom_data('feedback_section');
+        $footer_data = get_section_custom_data('footer_section');
                 
         ?>
         <div class="header side-paddings" style="background-color: <?php echo $header_data['header_background_color'] ?>">
@@ -170,7 +171,7 @@
             </div>
         </div>
 
-
+        <?php if(check_feedbacks()) { ?>
         <div id="customer-reviews" class="feedbacks side-paddings" style="color: <?php echo $feedbacks_data['background_color'] ?>">
             <h1><?php echo $feedbacks_data['displayed_feedback_section_name'] ?></h1>
             <div class="feedbacks-block">
@@ -181,6 +182,7 @@
                 ?>
             </div>
         </div>
+        <?php } ?>
 
 
         <div id="contsct-us" class="contact-us side-paddings">
@@ -228,21 +230,18 @@
                     <label for="message">Your message *</label>
                     <textarea name="message" id="message" cols="30" rows="10" placeholder="Enter your message" required></textarea>
                 </div>
-                <div>
+                <div class="submit">
                     <input type="submit" value="Send Application">
                 </div>
                 
             </from>
         </div>
-        <div class="footer side-paddings">
-            <h1>Ronatsoft</h1>
-            <p>All rights Reserved</p>
+
+
+        <div class="footer side-paddings" style="background-color: <?php echo $footer_data['background_color'] ?>">
+            <h1 style="color: <?php echo $footer_data['text_color'] ?>"><?php echo $footer_data['company_name'] ?></h1>
+            <p style="color: <?php echo $footer_data['text_color'] ?>"><?php echo $footer_data['rights_text'] ?></p>
         </div>
-
-
-
-
-
 
     </div>
     <?php echo get_scripts() ?>

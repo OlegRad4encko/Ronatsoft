@@ -141,7 +141,11 @@
             $feedback_block .= '<div class="client-name-position">';
             $feedback_block .= '<span style="color: '.$background.'">'. $feedbacks[$feed]['user_first_name'] .' '. $feedbacks[$feed]['user_second_name'] .'</span>';
             $feedback_block .= '<span style="color: '.$background.'">'. (($feedbacks[$feed]['user_type'] == 'new') ? 'New customer' : 'Regular customer') .'</span>';
-            $feedback_block .= '<span style="color: '.$background.'">'.$feedbacks[$feed]['publish_date'].'</span>';
+            
+            $format_date = strtotime($feedbacks[$feed]['publish_date']);
+            $new_format_date = date('d/m/Y', $format_date);
+
+            $feedback_block .= '<span style="color: '.$background.'">'.$new_format_date.'</span>';
             $feedback_block .= '</div>';
             $feedback_block .= '</div>';
             $feedback_block .= '<div class="client-text" style="color: '.$text_color.'; background-color: '.$background.'">';
@@ -150,6 +154,16 @@
             $feedback_block .= '</div>';
         }
         return $feedback_block;
+    }
+
+    function check_feedbacks(){
+        global $db;
+        $check_count_of_feedbacks = $db->query("SELECT COUNT(*) as 'count' from `feedbacks` where 1");
+        if($check_count_of_feedbacks[0]['count'] == 0) {
+            return false;   
+        }
+        return true;
+
     }
 
 ?>

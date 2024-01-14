@@ -18,6 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $feedback_id = findXSS($_POST['feedback_id']);
+
+    $history_data_old = $db->query("SELECT `user_first_name`, 
+    `user_second_name`, `image_name`, `user_type`, 
+    `publish_date`, `users_text` from `feedbacks` 
+    where SHA2(`feedback_id`, 256) = :feedback_id", [
+        'feedback_id' => $feedback_id
+    ]);
+
     $uploadDirectory = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'site-images'.DIRECTORY_SEPARATOR.'feedback_users_images'.DIRECTORY_SEPARATOR;
 
     $get_image_name = $db->query("SELECT `image_name` from `feedbacks` WHERE SHA2(`feedback_id`, 256) = :feedback_id",[
@@ -38,6 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $delete_feedback = $db->query("DELETE FROM `feedbacks` WHERE SHA2(`feedback_id`, 256) = :feedback_id", [
         'feedback_id' => $feedback_id
+    ]);
+
+    $old_data = array_encode_json($history_data_old[0]);
+    add_history([
+        'id_user' => get_unhashed_user_id(),
+        'action_type' => 12,
+        'last_value' => $old_data,
+        'new_value' => NULL,
+        'additional_info' => NULL
     ]);
 
     echo "success";

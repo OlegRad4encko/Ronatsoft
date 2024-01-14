@@ -45,7 +45,10 @@ function add_history($history_array_data) {
         'log in',
         'edit_user','add_user','delete_user',
         'view_application', 'solved_application', 'delete_application',
-        'add_social_link', 'edit_social_link', 'delete_social_link'
+        'add_social_link', 'edit_social_link', 'delete_social_link',
+        'add_feedback', 'edit_feedback', 'delete_feedback',
+        'add_project', 'edit_project', 'delete_project',
+        'edit_header_section', 'edit_logo_section', 'edit_about_us_section', 'edit_our_project_section', 'edit_feedback_section', 'edit_footer_section'
     ];
 
     $add_history = $db->query("INSERT INTO `history`(

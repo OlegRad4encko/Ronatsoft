@@ -64,7 +64,7 @@
                     <li><a href="home.php?page=history" id="history" <?php echo ($active_page == 'history')? 'class="active-page"' : '' ?>>History</a></li>
                     <?php } ?>
 
-                    <li><a href="#" id="logout">Logout</a></li>
+                    <li><a href="home.php?page=logout" id="logout">Logout</a></li>
                 </ul>
             </div>
         </div>

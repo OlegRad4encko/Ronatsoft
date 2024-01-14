@@ -663,6 +663,19 @@ h4 {
     border-radius: 10px;
 }
 
+.data-table .normal {
+    display: contents;
+    font-size: 16px;
+    border-bottom: 1px solid black !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+    
+}
+
+.normal:hover {
+    color: #00a8ff !important;
+}
+
 @media only screen and (max-width: 859px) {
     .application > .user_message > textarea {
         max-width: 350px;
