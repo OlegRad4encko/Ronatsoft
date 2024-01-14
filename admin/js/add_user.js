@@ -17,7 +17,6 @@ $(document).ready(function(){
                         url: 'handlers/add_user.php',
                         data: $(this).serialize(),
                         success: function(data) {
-                            console.log(data);
                             if(data.indexOf('error') != -1) {
                                 $('.popup-error').remove();
                                 $(data).appendTo($('body'));

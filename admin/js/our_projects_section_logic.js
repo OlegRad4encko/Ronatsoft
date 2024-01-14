@@ -26,17 +26,12 @@ function delete_project() {
             "csrf_token": $('#proj_'+$(this).val()).find('input[name=csrf_token]').val()
         }
 
-        console.log(delete_data);
-
         let request_data = $.param(delete_data);
         $.ajax({
             type: 'POST',
             url: 'handlers/delete_project.php',
             data: request_data,
             success: function(data) {
-                console.log(data);
-
-
                 if(data.indexOf('error') != -1) {
                     $('.popup-error').remove();
                     $('.popup-success').remove();
@@ -131,7 +126,6 @@ $(document).ready(function () {
             type: 'POST',
             data: $(this).serialize() ,
             success: function(response) {
-                console.log(response);
                 
                 if(response.indexOf('error') != -1) {
                     $('.popup-error').remove();
@@ -166,7 +160,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log(response);
                 
                 if(response.indexOf('error') != -1) {
                     $('.popup-error').remove();

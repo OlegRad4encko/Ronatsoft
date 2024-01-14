@@ -20,6 +20,7 @@
         $logo_data = get_section_custom_data('logo_section');
         $about_us_data = get_section_custom_data('about_us_section');
         $projects_data = get_section_custom_data('our_projects_section');
+        $feedbacks_data = get_section_custom_data('feedback_section');
                 
         ?>
         <div class="header side-paddings" style="background-color: <?php echo $header_data['header_background_color'] ?>">
@@ -169,31 +170,19 @@
             </div>
         </div>
 
-        <div id="customer-reviews" class="feedbacks side-paddings">
-            <h1>Client Feedbacks</h1>
+
+        <div id="customer-reviews" class="feedbacks side-paddings" style="color: <?php echo $feedbacks_data['background_color'] ?>">
+            <h1><?php echo $feedbacks_data['displayed_feedback_section_name'] ?></h1>
             <div class="feedbacks-block">
-
-                <div class="feedback right">
-                    <div class="client-info">
-                        <div class="client-image">
-                            <!-- <img src="" alt=""> -->
-
-                            <!-- default -->
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="client-name-position">
-                            <span>Name Surname</span>
-                            <span>New customer</span>
-                            <span>01\01\2023</span>
-                        </div>
-                    </div>
-                    <div class="client-text">
-                        Lorem ipsum dolor sit amet
-                    </div>
-                </div>
-
+                <?php
+                
+                echo get_feedback($feedbacks_data['count_feedback_blocks'], $feedbacks_data['background_color'], $feedbacks_data['feedback_background_color'])
+                
+                ?>
             </div>
         </div>
+
+
         <div id="contsct-us" class="contact-us side-paddings">
             <h1>Contact Us</h1>
             <form id="client-application">

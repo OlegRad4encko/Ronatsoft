@@ -12,9 +12,6 @@ $(document).ready(function () {
                         $('.popup-error').remove();
                     });
                 }
-
-                
-                console.log(data);
             }
             
         });

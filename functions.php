@@ -96,9 +96,7 @@
         if($check_count_of_project[0]['count'] <= $blocks) {
             $projects = $db->query("SELECT * from `our_projects` where 1");
         } else {
-            $projects = $db->query("SELECT * from `our_projects` where 1 order by rand() limit :blocks", [
-                'blocks' => $blocks
-            ]);
+            $projects = $db->query("SELECT * from `our_projects` where 1 order by rand() limit ".findXSS($blocks), []);
         }
 
         for ($prjct=0; $prjct < count($projects); $prjct++) { 
@@ -112,11 +110,46 @@
         }
 
         return $project_block;
+    }
 
-        
-            
-        
+    function get_feedback($blocks, $text_color, $background) {
+        global $db;
 
+        $check_count_of_feedbacks = $db->query("SELECT COUNT(*) as 'count' from `feedbacks` where 1");
+
+        $feedbacks = '';
+        $feedback_block = '';
+
+        if($check_count_of_feedbacks[0]['count'] <= $blocks) {
+            $feedbacks = $db->query("SELECT * from `feedbacks` where 1");
+        } else {
+            $feedbacks = $db->query("SELECT * from `feedbacks` where 1 order by rand() limit ".findXSS($blocks), []);
+        }
+
+        for ($feed=0; $feed < count($feedbacks); $feed++) { 
+            $feedback_block .= '<div class="feedback">';
+            $feedback_block .= '<style>.client-info::after {background-color: '.$background.'}</style>';
+            $feedback_block .= '<div class="client-info">';
+            $feedback_block .= '<div class="client-image" style="color: '.$background.'; background-color: '.$background.'">';
+            if($feedbacks[$feed]['image_name']) {
+                $feedback_block .= '<img src="site-images/feedback_users_images/'.$feedbacks[$feed]['image_name'].'" alt="">';        
+            } else {
+
+                $feedback_block .= '<i class="fa-solid fa-user" style="color: '.$text_color.'"></i>';
+            }
+            $feedback_block .= '</div>';
+            $feedback_block .= '<div class="client-name-position">';
+            $feedback_block .= '<span style="color: '.$background.'">'. $feedbacks[$feed]['user_first_name'] .' '. $feedbacks[$feed]['user_second_name'] .'</span>';
+            $feedback_block .= '<span style="color: '.$background.'">'. (($feedbacks[$feed]['user_type'] == 'new') ? 'New customer' : 'Regular customer') .'</span>';
+            $feedback_block .= '<span style="color: '.$background.'">'.$feedbacks[$feed]['publish_date'].'</span>';
+            $feedback_block .= '</div>';
+            $feedback_block .= '</div>';
+            $feedback_block .= '<div class="client-text" style="color: '.$text_color.'; background-color: '.$background.'">';
+            $feedback_block .= $feedbacks[$feed]['users_text'];
+            $feedback_block .= '</div>';
+            $feedback_block .= '</div>';
+        }
+        return $feedback_block;
     }
 
 ?>

@@ -331,13 +331,15 @@ a {
 
 .client-info .client-name-position span:nth-child(2){
     font-size: 20px;
-    color:rgba(255, 255, 255, 0.5)
+    color:white;
+    opacity: 50%;
 }
 
 .client-info .client-name-position span:nth-child(3){
     margin-top: 15px;
     font-size: 16px;
-    color:rgba(255, 255, 255, 0.3)
+    color:white;
+    opacity: 30%;
 }
 
 .client-info::after {
@@ -469,6 +471,10 @@ a {
     margin: 0px 60px 30px 60px;
     position: absolute;
     transform:translate(-11px, -60px);
+}
+
+.form-success i, .form-error i {
+    margin-left: 20px;
 }
 
 

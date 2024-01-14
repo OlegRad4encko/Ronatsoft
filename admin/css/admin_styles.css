@@ -583,6 +583,86 @@ h4 {
     align-self: self-end;
 }
 
+.inline-right a {
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #00a8ff;
+    color: #00a8ff;
+    border-radius: 5px;
+    transition: .2s;
+    text-decoration: none;
+}
+.inline-right a:hover {
+    color: white;
+    background-color: #00a8ff;;
+}
+
+.center-feedback-image {
+    padding-left: 0px !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content .center-feedback-image > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.modal-content .center-feedback-image > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    background-color: white;
+    border: 2px solid black;
+    overflow: hidden;
+}
+
+.modal-content .center-feedback-image div div i {    
+    font-size: 80px;
+}
+
+.modal-content .center-feedback-image div div img {
+    height: 80px;
+}
+
+.form-textarea {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin: 0px 40px;
+}
+
+.form-textarea textarea {
+    resize: none;
+    border: 1px solid #2f3640;
+    border-radius: 3px;
+    width: 100%;
+    padding: 5px 10px;
+}
+
+.delete-image:hover::before {
+    content: "Delete";
+    color: white;
+    font-size: 10px;
+    width: 80px;
+    height: 20px;
+    transform: translate(0px, 30px);
+    position: absolute;
+    background-color: red;
+    text-align: center;
+    z-index: 0;
+    padding-top: 5px;
+    border-radius: 10px;
+}
+
 @media only screen and (max-width: 859px) {
     .application > .user_message > textarea {
         max-width: 350px;

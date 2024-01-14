@@ -439,7 +439,42 @@
 
 
 
-                        <h3>Client Feedbacks section</h3>
+                        <h3>Client Feedbacks section</h3><?php $feedbacks = get_section_data('feedback_section'); ?>
+                        <form class="edit-landing" id="feedbacks_section_form" enctype="multipart/form-data">
+                            <input name="csrf_token" type="hidden" value="<?php echo $CSFR_token; ?>" />
+
+                            <div class="inline gap2">
+                                <div class="inline-block">
+                                    <label for="feedback_section_name">Displayed section name</label>
+                                    <input id="feedback_section_name" type="text" name="displayed_feedback_section_name" value="<?php echo $feedbacks['displayed_feedback_section_name'] ?>" placeholder="Displayed name" required>
+                                </div>
+                                <div class="inline-block">
+                                    <label for="count_feedback_blocks">Count feedback blocks displayed (n-random)</label>
+                                    <input id="count_feedback_blocks" type="number" name="count_feedback_blocks" value="<?php echo $feedbacks['count_feedback_blocks'] ?>" min="2" max="10" placeholder="Count" required>
+                                </div>
+                            </div>
+
+                            <h4>Colors setings</h4>
+
+                            <div class="inline gap2">
+                                <div class="inline-block">
+                                    <label for="background_color">Background color</label>
+                                    <input id="background_color" type="color" name="background_color" value="<?php echo $feedbacks['background_color'] ?>" placeholder="background_color" required>
+                                </div>
+                                <div class="inline-block">
+                                    <label for="feedback_background_color">Feedback background color</label>
+                                    <input id="feedback_background_color" type="color" name="feedback_background_color" value="<?php echo $feedbacks['feedback_background_color'] ?>" placeholder="feedback_background_color" required>
+                                </div>
+                            </div>
+                            <div class="inline gap1 inline-right">
+                                <button type="submit"><i class="fa-regular fa-floppy-disk"></i></button>
+                            </div>
+                            <div class="inline gap1 inline-right">
+                               <a href="feedbacks_setting.php" class="edit">Edit feedbacks <i class="fa-solid fa-pen-to-square"></i></a>
+                            </div>
+                        </form>
+
+                        
 
                         <h3>Footer section</h3>
                         <!-- confirming of deleting applications -->
@@ -461,8 +496,6 @@
                         {
                             $new_applications = $_GET['new_applications'];
                         }
-
-
                         ?> 
                             <div class="applications">
                                 <form class="filter">
@@ -476,30 +509,21 @@
                                                 <option value="50" <?php echo ($entries_on_page == 50) ? 'selected' : '' ?>>50</option>
                                             </select>
                                         </div>
-                                        
-
                                         <div>
                                             <label for="new">Only new application</label>
                                             <input type="checkbox" id="new" name="new_applications" value="true" <?php echo ($new_applications) ? 'checked' : '' ?>>
                                         </div>
-                                        
                                     </div>
-
                                     <button type="submit">Apply</button>
                                 </form>
-
-                                
                             <?php
-
                             if(isset($_GET['page_num'])) {
                                 $page_num = $_GET['page_num'];
                             }
 
-                            
                             echo get_applications($entries_on_page, $new_applications, $page_num, $entries_on_page);
                             
                             ?>
-                        
                             </div>
                         <?php
 

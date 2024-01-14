@@ -1,5 +1,6 @@
 $(document).ready(function(){
     $('[name=edit_user]').on('click', function(){
+        console.log($(this));
         $.ajax({
             type: 'POST',
             url: 'templates/edit_user.php',

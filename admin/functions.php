@@ -69,9 +69,24 @@
             '<script src="js/header_section_logic.js" crossorigin="anonymous"></script>',
             '<script src="js/logo_section_logic.js" crossorigin="anonymous"></script>',
             '<script src="js/about_us_section_logic.js" crossorigin="anonymous"></script>',
-            '<script src="js/our_projects_section_logic.js" crossorigin="anonymous"></script>'
+            '<script src="js/our_projects_section_logic.js" crossorigin="anonymous"></script>',
+            '<script src="js/feedbacks_logic.js" crossorigin="anonymous"></script>'
         ];
 
+        $result_string = '';
+        for ($i = 0; $i < count($scripts); $i ++) {
+            $result_string = $result_string.$scripts[$i];
+        }
+
+        return $result_string;
+    }
+
+    function get_feedback_scripts() {
+        $scripts = [
+            '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
+            '<script src="https://kit.fontawesome.com/24baab97da.js" crossorigin="anonymous"></script>',
+            '<script src="js/add_edit_delete_feedback.js" crossorigin="anonymous"></script>'
+        ];
         $result_string = '';
         for ($i = 0; $i < count($scripts); $i ++) {
             $result_string = $result_string.$scripts[$i];
@@ -692,6 +707,34 @@
         echo $projects_block;
 
 
+    }
+
+    function get_feedback_table(){
+        global $db;
+        $feedback_table = '';
+
+        $check_feedback_count = $db->query("SELECT count(*) as 'count' from `feedbacks` where 1");
+        if($check_feedback_count[0]['count'] == 0) {
+            return '<div>Empty feedbacks list. You can add <a href="#" name="add_feedback">new feedback</a></div>';
+        }
+
+        $feedbacks = $db->query("SELECT SHA2(`feedback_id`, 256) as 'feedback_id', `user_first_name`, `user_second_name`, 
+        `publish_date` from `feedbacks` where 1");
+
+        $feedback_table = '<table class="data-table"><tr><th>Client First Name</th><th>Client Second Name</th><th>Date</th><th>Edit Feedback</th></tr>';
+
+        for ($feed=0; $feed < count($feedbacks); $feed++) { 
+            $feedback_table .= '<tr>';
+            $feedback_table .= '<td>'.$feedbacks[$feed]['user_first_name'].'</td>';
+            $feedback_table .= '<td>'.$feedbacks[$feed]['user_second_name'].'</td>';
+            $feedback_table .= '<td>'.$feedbacks[$feed]['publish_date'].'</td>';
+            $feedback_table .= '<td>';
+            $feedback_table .= '<button name="edit_feedback" value="'.$feedbacks[$feed]['feedback_id'].'"><i class="fa-solid fa-user-pen"></i></button>';
+            $feedback_table .= '</td></tr>';
+        }
+        
+        $feedback_table .= '</table>';
+        return $feedback_table;
     }
     
 

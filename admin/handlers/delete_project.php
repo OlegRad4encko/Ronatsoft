@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    
     if (!isset( $_SESSION['csrf_token'] ) and $_SESSION['csrf_token'] != @$_POST['csrf_token']) 
     {
-        echo build_error_block('1Form submission error');
+        echo build_error_block('Form submission error');
         exit;
     }
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo build_success_block("Projecs successfuly deleted.");
 } else {
-    echo build_error_block('1Form submission error');
+    echo build_error_block('Form submission error');
     exit;
 }
 
