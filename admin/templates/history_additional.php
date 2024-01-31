@@ -43,24 +43,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
 
 <div class="add-edit-form">
-        <div class="modal-content" id="edit_user">
+        <div class="modal-content modal-history" id="edit_user">
             <div class="modal-header">
                 <h1><?php echo $additional_information[$history_data[0]['action_type']] ?></h1>
                 <i class="cross-form fa-regular fa-circle-xmark"></i>
             </div>
             <table>
-                <tr>
-                    <td>Old data:</td>
-                </tr>
-                <tr>
-                    <td><?php echo $history_data[0]['last_value'] ?></td>
-                </tr>
-                <tr>
-                    <td>New data:</td>
-                </tr>
-                <tr>
-                    <td><?php echo$history_data[0]['new_value'] ?></td>
-                </tr>
+                <?php    
+                    $last_value = '';
+                    $new_value = ''; 
+                ?>
+                <?php if($history_data[0]['last_value'] != '') {
+                    $last_value = json_decode($history_data[0]['last_value'], true);
+                }?>
+                <?php if($history_data[0]['new_value'] != '') {
+                    $new_value = json_decode($history_data[0]['new_value'], true);
+                }?>
+
+                <?php  
+                    if($history_data[0]['last_value'] != '') {
+                ?>
+                    <tr>
+                        <td><b>Old data:</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php 
+                                foreach ($last_value as $key => $value) {
+                                    echo "<i>$key</i> => $value\n <br>";
+                                }
+                            ?>
+                        </td>
+                    </tr>
+
+                <?php } ?>
+
+                <?php  
+                    if($history_data[0]['new_value'] != '') {
+                ?>
+                    <tr>
+                        <td><b>New data:</b></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php 
+                                foreach ($new_value as $key => $value) {
+                                    echo "<i>$key</i> => $value\n <br>";
+                                }
+                            ?>
+                        </td>
+                    </tr>
+
+                <?php } ?>
+
             </table>
         </div>
     </div>

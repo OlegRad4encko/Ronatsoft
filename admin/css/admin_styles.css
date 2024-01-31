@@ -364,7 +364,7 @@ body {
     display: block;
 }
 
-.socials-blocks .social-block input:disabled {
+.socials-blocks .social-block input[readonly] {
     border-color: white;
     background-color: white;
 }
@@ -538,7 +538,7 @@ h4 {
     color: white;
 }
 
-.project .project-data input[disabled] {
+.project .project-data input[readonly] {
     border: 1px solid white;
     background-color: white;
 }
@@ -671,6 +671,7 @@ h4 {
     cursor: pointer;
     
 }
+
 
 .normal:hover {
     color: #00a8ff !important;

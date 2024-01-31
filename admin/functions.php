@@ -49,6 +49,10 @@
     }
 
 
+    function array_encode_json($array) {
+        return json_encode($array);
+    }
+
 
     function generate_form_token() {
         return $_SESSION['csrf_token'] = substr( str_shuffle( 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' ), 0, 10 );
@@ -481,17 +485,17 @@
         $application_view .= '</div>';
         $application_view .= '<div>';
         $application_view .= '<div><label>User Email</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User Email" value="'.$application_data[0]['app_user_mail'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User Email" value="'.$application_data[0]['app_user_mail'].'">';
         $application_view .= '</div><div><label>User tel</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User tel" value="'.$application_data[0]['app_user_tel'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User tel" value="'.$application_data[0]['app_user_tel'].'">';
         $application_view .= '</div></div><div><div><label>User first name</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User first name" value="'.$application_data[0]['app_user_first_name'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User first name" value="'.$application_data[0]['app_user_first_name'].'">';
         $application_view .= '</div><div><label>User second name</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User second name" value="'.$application_data[0]['app_user_second_name'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User second name" value="'.$application_data[0]['app_user_second_name'].'">';
         $application_view .= '</div></div><div><div><label>User country</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User country" value="'.$application_data[0]['app_user_country'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User country" value="'.$application_data[0]['app_user_country'].'">';
         $application_view .= '</div><div><label>User company</label>';
-        $application_view .= '<input type="text" readonly="readonly" placeholder="User company" value="'.$application_data[0]['app_user_company'].'">';
+        $application_view .= '<input type="text" readonly placeholder="User company" value="'.$application_data[0]['app_user_company'].'">';
         $application_view .= '</div></div><div class="user_message">';
         $application_view .= '<textarea readonly="readonly" placeholder="User message">'.$application_data[0]['app_user_message'].'</textarea>';
         $application_view .= '</div>';
@@ -576,6 +580,17 @@
         ]);
 
         if ($check_state[0]['count'] == 1) {
+            $application_data = $db->query("SELECT `app_user_first_name` as 'first_name',
+                `app_user_second_name` as 'second_name' ,
+                `app_user_mail` as 'user_mail',
+                `app_user_tel` as 'user_tel',
+                `app_user_country` as 'user_country',
+                `app_user_company` as 'user_company',
+                `app_user_message` as 'user_message' 
+            FROM `applications` WHERE SHA2(`id_application`, 256) = :id_application",[
+                'id_application' => $id_application
+            ]);
+
             $change_state = $db->query("UPDATE `applications` SET `application_state` = 'viewed', `id_user` = :id_user WHERE SHA2(`id_application`, 256) = :id_application",
             [
                 'id_user' => get_unhashed_user_id(),
@@ -586,7 +601,7 @@
                 'id_user' => get_unhashed_user_id(),
                 'action_type' => 4,
                 'last_value' => NULL,
-                'new_value' => $id_application,
+                'new_value' => array_encode_json($application_data[0]),
                 'additional_info' => NULL
             ]);
         }
@@ -612,9 +627,9 @@
         for($link = 0; $link < count($get_social_links); $link ++) {
             $links_view .= '<div class="social-block" id="soc_'.$get_social_links[$link]['id_link'].'">';
             $links_view .= '<div>';
-            $links_view .= '<input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="'.$get_social_links[$link]['link_label'].'" disabled required>';
-            $links_view .= '<input class="social_link" type="text" name="icon" placeholder="icon class" value="'.$get_social_links[$link]['link_icon_class'].'" disabled required>';
-            $links_view .= '<input class="social_link" type="text" name="link" placeholder="social link" value="'.$get_social_links[$link]['link_url'].'" disabled required>';
+            $links_view .= '<input class="social_link" type="text" name="label" placeholder="Social name (alias)" value="'.$get_social_links[$link]['link_label'].'" readonly required>';
+            $links_view .= '<input class="social_link" type="text" name="icon" placeholder="icon class" value="'.$get_social_links[$link]['link_icon_class'].'" readonly required>';
+            $links_view .= '<input class="social_link" type="text" name="link" placeholder="social link" value="'.$get_social_links[$link]['link_url'].'" readonly required>';
             $links_view .= '<input name="csrf_token" type="hidden" value="'.$token.'" />';
             
             $links_view .= '</div>';
@@ -694,14 +709,14 @@
             $projects_block .= '<input name="csrf_token" type="hidden" value="'.$token.'" />';
             $projects_block .= '<div>';
             $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_link">Project link</label>';
-            $projects_block .= '<input type="text" name="project_link" id="pr_'.$projects_data[$project]['project_id'].'_link" value="'.$projects_data[$project]['project_link'].'" disabled>';
+            $projects_block .= '<input type="text" name="project_link" id="pr_'.$projects_data[$project]['project_id'].'_link" value="'.$projects_data[$project]['project_link'].'" readonly>';
             $projects_block .= '</div>';
             $projects_block .= '<div>';
             $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_image_link">Project image link</label>';
-            $projects_block .= '<input type="text" name="project_image_link" id="pr_'.$projects_data[$project]['project_id'].'_image_link" value="'.$projects_data[$project]['project_image'].'" disabled>';
+            $projects_block .= '<input type="text" name="project_image_link" id="pr_'.$projects_data[$project]['project_id'].'_image_link" value="'.$projects_data[$project]['project_image'].'" readonly>';
             $projects_block .= '</div><div>';
             $projects_block .= '<label for="pr_'.$projects_data[$project]['project_id'].'_text">Project text</label>';
-            $projects_block .= '<input type="text" name="project_text" id="pr_1_text" value="'.$projects_data[$project]['project_text'].'" disabled>';
+            $projects_block .= '<input type="text" name="project_text" id="pr_1_text" value="'.$projects_data[$project]['project_text'].'" readonly>';
             $projects_block .= '</div></div>';
             $projects_block .= '<button name="delete_project" value="'.$projects_data[$project]['project_id'].'"><i class="fa-solid fa-trash" aria-hidden="true"></i></button></div>';
         }

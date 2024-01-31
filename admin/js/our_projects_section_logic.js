@@ -4,14 +4,14 @@ function add_new_project_block(project_id, project_link, project_image, project_
     block_string += '<input name="csrf_token" type="hidden" value="'+ token +'" />';
     block_string += '<div>';
     block_string += '<label for="pr_'+ project_id +'_link">Project link</label>';
-    block_string += '<input type="text" name="project_link" id="pr_'+ project_id +'_link" value="'+ project_link +'" disabled>';
+    block_string += '<input type="text" name="project_link" id="pr_'+ project_id +'_link" value="'+ project_link +'" readonly>';
     block_string += '</div>';
     block_string += '<div>';
     block_string += '<label for="pr_'+ project_id +'_image_link">Project image link</label>';
-    block_string += '<input type="text" name="project_image_link" id="pr_'+ project_id +'_image_link" value="'+ project_image +'" disabled>';
+    block_string += '<input type="text" name="project_image_link" id="pr_'+ project_id +'_image_link" value="'+ project_image +'" readonly>';
     block_string += '</div><div>';
     block_string += '<label for="pr_'+ project_id +'_text">Project text</label>';
-    block_string += '<input type="text" name="project_text" id="pr_1_text" value="'+ project_text +'" disabled>';
+    block_string += '<input type="text" name="project_text" id="pr_1_text" value="'+ project_text +'" readonly>';
     block_string += '</div></div>';
     block_string += '<button name="delete_project" value="'+ project_id +'"><i class="fa-solid fa-trash" aria-hidden="true"></i></button></div>';
 
@@ -60,7 +60,7 @@ function delete_project() {
 }
 
 function edit_data() {
-    $(this).children('div').children('input').prop('disabled', false);
+    $(this).children('div').children('input').prop('readonly', false);
     $(this).parent('.project').find('button').prop('name', 'save_project');
     $(this).parent('.project').find('button').html('<i class="fa-regular fa-floppy-disk"></i>');
     $(this).parent('.project').find('button').off('click', delete_project);
@@ -97,7 +97,7 @@ function save_project() {
             }
 
             if(data.indexOf('success') != -1) {
-                $('#proj_'+update_data['project_id']).find('input').prop('disabled', true);
+                $('#proj_'+update_data['project_id']).find('input').prop('readonly', true);
                 $('#proj_'+update_data['project_id']).find('button[name=save_project]').html('<i class="fa-solid fa-trash"></i>');
                 $('#proj_'+update_data['project_id']).find('button[name=save_project]').prop('name', 'delete_project');
                 $('#proj_'+update_data['project_id']).find('button[name=delete_project]').off('click', save_project);
